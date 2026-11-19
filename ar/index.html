@@ -19,6 +19,7 @@
     <link rel="icon" href="../assets/favicon/favicon.ico" sizes="any">
     <link rel="apple-touch-icon" href="../assets/favicon/apple-touch-icon.png">
     <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/config.js" defer></script>
     <script src="../assets/js/site-data.js" defer></script>
     <script src="../assets/js/main.js" defer></script>
   </head>
@@ -124,45 +125,153 @@
           </div>
           <div class="contact-card">
             <p class="contact-card-label">ابدأ مشروعك</p>
-            <form class="contact-form" data-contact-form method="post" novalidate>
-              <div class="form-row">
-                <div class="form-field">
-                  <label for="contact-name">الاسم الكامل <span aria-hidden="true">*</span></label>
-                  <input id="contact-name" name="name" type="text" autocomplete="name" minlength="2" maxlength="120" required>
+            <ol class="request-progress" data-request-progress aria-label="تقدم نموذج الطلب">
+              <li data-progress-step="1" aria-current="step"><span>٠١</span> الشركة</li>
+              <li data-progress-step="2"><span>٠٢</span> التواصل</li>
+              <li data-progress-step="3"><span>٠٣</span> المشروع</li>
+            </ol>
+            <form class="contact-form request-form" data-request-form method="post" novalidate>
+              <fieldset class="request-step" data-form-step="1" aria-labelledby="request-step-title-1">
+                <legend class="visually-hidden">معلومات الشركة</legend>
+                <h3 id="request-step-title-1">معلومات الشركة</h3>
+                <div class="form-row">
+                  <div class="form-field">
+                    <label for="company-name">اسم الشركة <span aria-hidden="true">*</span></label>
+                    <input id="company-name" name="companyName" type="text" autocomplete="organization" maxlength="160" required aria-describedby="company-name-error">
+                    <small class="field-error" id="company-name-error" data-field-error="companyName"></small>
+                  </div>
+                  <div class="form-field">
+                    <label for="company-industry">مجال الشركة <span aria-hidden="true">*</span></label>
+                    <select id="company-industry" name="companyIndustry" required aria-describedby="company-industry-error">
+                      <option value="" selected disabled>اختر مجال الشركة</option>
+                    </select>
+                    <small class="field-error" id="company-industry-error" data-field-error="companyIndustry"></small>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-field">
+                    <label for="company-size">حجم الشركة <span aria-hidden="true">*</span></label>
+                    <select id="company-size" name="companySize" required aria-describedby="company-size-error">
+                      <option value="" selected disabled>اختر حجم الشركة</option>
+                    </select>
+                    <small class="field-error" id="company-size-error" data-field-error="companySize"></small>
+                  </div>
+                  <div class="form-field">
+                    <label for="company-website">موقع الشركة أو حسابها الاجتماعي <span class="optional-label">(اختياري)</span></label>
+                    <input id="company-website" name="companyWebsite" type="url" inputmode="url" maxlength="500" placeholder="رابط الموقع أو حساب التواصل" aria-describedby="company-website-error">
+                    <small class="field-error" id="company-website-error" data-field-error="companyWebsite"></small>
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset class="request-step" data-form-step="2" aria-labelledby="request-step-title-2" hidden>
+                <legend class="visually-hidden">بيانات مسؤول التواصل</legend>
+                <h3 id="request-step-title-2">بيانات مسؤول التواصل</h3>
+                <div class="form-row">
+                  <div class="form-field">
+                    <label for="contact-person-name">الاسم الكامل <span aria-hidden="true">*</span></label>
+                    <input id="contact-person-name" name="contactName" type="text" autocomplete="name" maxlength="120" required aria-describedby="contact-name-error">
+                    <small class="field-error" id="contact-name-error" data-field-error="contactName"></small>
+                  </div>
+                  <div class="form-field">
+                    <label for="contact-job-title">المسمى الوظيفي <span aria-hidden="true">*</span></label>
+                    <select id="contact-job-title" name="jobTitle" required aria-describedby="job-title-error">
+                      <option value="" selected disabled>اختر المسمى الوظيفي</option>
+                    </select>
+                    <small class="field-error" id="job-title-error" data-field-error="jobTitle"></small>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-field">
+                    <label for="contact-email">البريد الإلكتروني <span aria-hidden="true">*</span></label>
+                    <input id="contact-email" name="email" type="email" autocomplete="email" maxlength="254" required aria-describedby="email-error">
+                    <small class="field-error" id="email-error" data-field-error="email"></small>
+                  </div>
+                  <div class="form-field">
+                    <label for="contact-phone">رقم الهاتف <span aria-hidden="true">*</span></label>
+                    <input id="contact-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" value="+20 " maxlength="32" required aria-describedby="phone-help phone-error">
+                    <small class="field-help" id="phone-help">أضف رمز الاتصال الدولي، ويمكنك تغيير ‎+20.</small>
+                    <small class="field-error" id="phone-error" data-field-error="phone"></small>
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset class="request-step" data-form-step="3" aria-labelledby="request-step-title-3" hidden>
+                <legend class="visually-hidden">متطلبات المشروع</legend>
+                <h3 id="request-step-title-3">متطلبات المشروع</h3>
+                <div class="form-row">
+                  <div class="form-field">
+                    <label for="requested-service">الخدمة المطلوبة <span aria-hidden="true">*</span></label>
+                    <select id="requested-service" name="requestedService" required aria-describedby="requested-service-error">
+                      <option value="" selected disabled>اختر الخدمة</option>
+                    </select>
+                    <small class="field-error" id="requested-service-error" data-field-error="requestedService"></small>
+                  </div>
+                  <div class="form-field">
+                    <label for="requested-package">الباقة المطلوبة <span aria-hidden="true">*</span></label>
+                    <select id="requested-package" name="requestedPackage" required disabled aria-describedby="requested-package-error">
+                      <option value="" selected disabled>اختر الخدمة أولًا</option>
+                    </select>
+                    <small class="field-error" id="requested-package-error" data-field-error="requestedPackage"></small>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-field">
+                    <label for="estimated-budget">الميزانية التقديرية للخدمة <span aria-hidden="true">*</span></label>
+                    <select id="estimated-budget" name="estimatedBudget" required aria-describedby="estimated-budget-error">
+                      <option value="" selected disabled>اختر نطاق الميزانية</option>
+                    </select>
+                    <small class="field-error" id="estimated-budget-error" data-field-error="estimatedBudget"></small>
+                  </div>
+                  <div class="form-field" data-advertising-budget-field hidden>
+                    <label for="advertising-budget">الإنفاق الإعلاني الشهري <span aria-hidden="true">*</span></label>
+                    <select id="advertising-budget" name="advertisingBudget" disabled aria-describedby="advertising-budget-help advertising-budget-error">
+                      <option value="" selected disabled>اختر ميزانية الإعلان</option>
+                    </select>
+                    <small class="field-help" id="advertising-budget-help">هذه الميزانية منفصلة عن رسوم إدارة زتونة.</small>
+                    <small class="field-error" id="advertising-budget-error" data-field-error="advertisingBudget"></small>
+                  </div>
                 </div>
                 <div class="form-field">
-                  <label for="contact-email">البريد الإلكتروني <span aria-hidden="true">*</span></label>
-                  <input id="contact-email" name="email" type="email" autocomplete="email" maxlength="254" required>
+                  <label for="project-summary">ملخص المشروع <span aria-hidden="true">*</span></label>
+                  <textarea id="project-summary" name="projectSummary" rows="5" minlength="20" maxlength="2000" required aria-describedby="project-summary-help project-summary-count project-summary-error" placeholder="أخبرنا عن نشاطك وما تحتاج إليه والتحديات الحالية والنتيجة التي تتطلع إليها."></textarea>
+                  <div class="field-meta">
+                    <small class="field-help" id="project-summary-help">يرجى توضيح نشاطك واحتياجاتك والتحديات الحالية والنتيجة المرجوة.</small>
+                    <small class="character-count" id="project-summary-count" data-character-count aria-live="polite">٠ / ٢٠٠٠</small>
+                  </div>
+                  <small class="field-error" id="project-summary-error" data-field-error="projectSummary"></small>
                 </div>
-              </div>
-              <div class="form-row">
-                <div class="form-field">
-                  <label for="service-interest">الخدمة المطلوبة <span aria-hidden="true">*</span></label>
-                  <select id="service-interest" name="service_interest" required>
-                    <option value="" selected disabled>اختر خيارًا</option>
-                    <option value="discuss" data-discuss-option>لست متأكدًا بعد — لنتحدث</option>
-                  </select>
-                </div>
-                <div class="form-field">
-                  <label for="project-budget">ميزانية المشروع <span class="optional-label">(اختياري)</span></label>
-                  <input id="project-budget" name="budget" type="text" maxlength="100" placeholder="يمكنك ذكر نطاق العملة والميزانية">
-                </div>
-              </div>
-              <div class="form-field">
-                <label for="project-message">تفاصيل المشروع <span aria-hidden="true">*</span></label>
-                <textarea id="project-message" name="message" rows="5" minlength="20" maxlength="5000" required></textarea>
-              </div>
+              </fieldset>
+
               <div class="honeypot-field" aria-hidden="true">
-                <label for="contact-website">اترك هذا الحقل فارغًا</label>
-                <input id="contact-website" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
+                <label for="request-website">اترك هذا الحقل فارغًا</label>
+                <input id="request-website" name="honeypot" type="text" tabindex="-1" autocomplete="off">
               </div>
-              <button class="button button-primary form-submit" type="submit" disabled>
-                <span data-submit-label>إرسال تفاصيل المشروع</span>
-                <span class="form-submit-icon" aria-hidden="true">↙</span>
-              </button>
+              <input type="hidden" name="websiteLanguage" value="ar">
+              <input type="hidden" name="submissionToken" data-submission-token>
+              <input type="hidden" name="responseNonce" data-response-nonce>
+              <input type="hidden" name="formStartedAt" data-form-started-at>
+              <input type="hidden" name="parentOrigin" data-parent-origin>
+
               <p class="form-status" data-form-status role="status" aria-live="polite"></p>
-              <p class="form-note">سيتم تفعيل الإرسال بعد إعداد رابط Formspree.</p>
+              <p class="form-note request-privacy">سنستخدم معلوماتك لمراجعة طلب الخدمة والرد عليه فقط.</p>
+              <div class="request-actions">
+                <button class="button button-secondary request-back" type="button" data-request-back hidden>السابق</button>
+                <button class="button button-primary request-next" type="button" data-request-next>متابعة <span aria-hidden="true">↙</span></button>
+                <button class="button button-primary form-submit" type="submit" data-request-submit hidden>
+                  <span data-submit-label>إرسال الطلب</span>
+                  <span class="form-submit-icon" aria-hidden="true">↙</span>
+                </button>
+              </div>
             </form>
+            <section class="request-success" data-request-success aria-live="polite" hidden>
+              <p class="eyebrow">تم استلام الطلب</p>
+              <h3 tabindex="-1">شكرًا لتواصلك معنا.</h3>
+              <p>تم حفظ طلبك، وسيطلع فريق زتونة على التفاصيل التي أرسلتها.</p>
+              <p class="request-reference">رقم الطلب <strong data-request-id></strong></p>
+              <button class="button button-primary" type="button" data-new-request>إرسال طلب آخر</button>
+            </section>
+            <iframe class="submission-frame" name="request-response-frame" title="نتيجة إرسال الطلب" aria-hidden="true" tabindex="-1"></iframe>
             <div class="contact-details" data-contact-details></div>
             <p class="contact-empty" data-contact-empty>نعمل على إعداد معلومات التواصل المباشر.</p>
             <div class="social-links" data-social-links aria-label="حسابات التواصل الاجتماعي"></div>

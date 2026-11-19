@@ -19,10 +19,14 @@ The approved service catalog and pricing are maintained in `assets/js/site-data.
 
 Edit `assets/js/site-data.js` to add finalized services, contact details, and social links. Do not add placeholder accounts, unapproved work, or unconfirmed contact information.
 
+Service, price, and request-form data are stored in one shared object. A service shown in the request form needs a stable `requestValue`, translated `requestName`, and canonical package values. Use `requestPackages` when visitors need to choose individual items within a grouped pricing card. The request-form taxonomies and canonical values are in `window.ZATONA_SITE_DATA.requestForm`; keep these values consistent with the server allowlists in `google-apps-script/Code.gs`.
+
 Each service entry needs English and Arabic values:
 
 ```js
 {
+  requestValue: "approved_service_key",
+  requestName: { en: "Approved request label", ar: "اسم الخدمة المعتمد" },
   name: { en: "Approved service name", ar: "اسم الخدمة المعتمد" },
   description: { en: "Approved description.", ar: "وصف الخدمة المعتمد." },
   visual: "service-visual-01.svg" // optional; only when relevant
@@ -44,13 +48,13 @@ socials: [
 
 When adding public-facing content, update both language pages and keep their section structure and IDs in sync.
 
-## Contact form
+## Client request form
 
-The bilingual form submits asynchronously to Formspree and does not navigate away from the site. To enable it, set `formspreeEndpoint` in `assets/js/site-data.js` to the actual public form endpoint, for example `https://formspree.io/f/your-form-id`. The endpoint provided in the project request was a placeholder, so the repository intentionally leaves this value blank. While blank, the form validates locally and displays an explicit not-configured message without sending data.
+The bilingual three-step request form is designed to submit through a browser-native form POST to a Google Apps Script web app. It targets a hidden iframe and waits for an explicit, nonce-checked backend confirmation before showing success. The endpoint URL is configured once in `assets/js/config.js`. While it is blank, the form validates but displays a configuration error and does not claim that a request was sent.
 
-The form sends the name, email, service interest, optional budget, message, and `_gotcha` honeypot field. The selected service list is populated from the `services` configuration; the “not sure yet” option remains available until services are finalized. Formspree's endpoint is public configuration, not a private API key. Do not add private credentials to this static website.
+The server-side source is `google-apps-script/Code.gs`. Follow [GOOGLE_APPS_SCRIPT_SETUP.md](./GOOGLE_APPS_SCRIPT_SETUP.md) to create the private spreadsheet, initialize its exact schema, deploy the web app, configure the public endpoint URL, and run clearly marked test submissions. Do not add spreadsheet credentials, OAuth secrets, or private account data to this static website. The website endpoint is publicly visible by design; the setup guide documents the resulting abuse limitations and required verification.
 
-After adding the real endpoint, submit a test inquiry in both languages and verify receipt in the Formspree account before treating delivery as active. An unset endpoint cannot be tested as a live integration.
+The Apps Script logic has isolated Node.js mock tests; run them with `node --test google-apps-script/Code.test.js`. They do not verify a real Google account, deployed web app, or spreadsheet.
 
 ## Publish
 

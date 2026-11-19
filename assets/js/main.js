@@ -1,27 +1,57 @@
 (() => {
   const assetsBase = new URL("../", document.currentScript.src);
-  const formMessages = {
+  const messages = {
     en: {
-      required: "Please complete this field.",
-      invalidEmail: "Enter a valid email address.",
-      tooShort: "Please enter at least {count} characters.",
-      loading: "Sending your message…",
-      success: "Thank you. Your message has been sent.",
-      error: "We couldn’t send your message. Please try again.",
-      notConfigured: "The contact form is not configured yet. Please contact ZATONA through a confirmed channel.",
-      discuss: "I’m not sure yet — let’s discuss",
-      whatsapp: "Chat on WhatsApp"
+      whatsapp: "Chat on WhatsApp",
+      choose: "Choose an option",
+      validation: {
+        required: "Please complete this field.",
+        invalidEmail: "Enter a valid email address.",
+        invalidUrl: "Enter a complete website or social profile URL, including https://.",
+        invalidPhone: "Enter a valid international phone number with its country code.",
+        tooShort: "Please enter at least {count} characters."
+      },
+      submit: "Send request",
+      sending: "Sending securely…",
+      configError: "The request service is not configured yet. Your information has not been sent.",
+      error: "We couldn’t confirm that your request was saved. Your details are still here; you can safely retry.",
+      timeout: "We haven’t received confirmation yet. Your request may still be processing; retrying with these same details won’t create a duplicate.",
+      placeholders: {
+        industry: "Choose an industry",
+        companySize: "Choose company size",
+        jobTitle: "Choose a job title",
+        service: "Choose a service",
+        package: "Select a service first",
+        budget: "Choose a budget range",
+        advertisingBudget: "Choose an advertising budget",
+        summary: "Tell us about your business, what you need, your current challenges, and the outcome you hope to achieve."
+      },
     },
     ar: {
-      required: "يرجى إكمال هذا الحقل.",
-      invalidEmail: "يرجى إدخال بريد إلكتروني صحيح.",
-      tooShort: "يرجى إدخال {count} أحرف على الأقل.",
-      loading: "جارٍ إرسال رسالتك…",
-      success: "شكرًا لك. تم إرسال رسالتك.",
-      error: "تعذر إرسال رسالتك. يرجى المحاولة مرة أخرى.",
-      notConfigured: "نموذج التواصل غير مُعدّ بعد. يرجى التواصل مع زتونة عبر قناة مؤكدة.",
-      discuss: "لست متأكدًا بعد — لنتحدث",
-      whatsapp: "تواصل عبر واتساب"
+      whatsapp: "تواصل عبر واتساب",
+      choose: "اختر خيارًا",
+      validation: {
+        required: "يرجى إكمال هذا الحقل.",
+        invalidEmail: "يرجى إدخال بريد إلكتروني صحيح.",
+        invalidUrl: "أدخل رابطًا كاملًا للموقع أو الحساب الاجتماعي، يبدأ بـ https://.",
+        invalidPhone: "أدخل رقم هاتف دوليًا صحيحًا متضمنًا رمز الدولة.",
+        tooShort: "يرجى إدخال {count} أحرف على الأقل."
+      },
+      submit: "إرسال الطلب",
+      sending: "جارٍ إرسال الطلب بأمان…",
+      configError: "خدمة استقبال الطلبات غير مُعدّة بعد. لم يتم إرسال معلوماتك.",
+      error: "تعذر تأكيد حفظ الطلب. ما زالت بياناتك موجودة ويمكنك إعادة المحاولة بأمان.",
+      timeout: "لم يصلنا تأكيد بعد. قد يكون الطلب قيد المعالجة؛ إعادة المحاولة بالبيانات نفسها لن تنشئ طلبًا مكررًا.",
+      placeholders: {
+        industry: "اختر مجال الشركة",
+        companySize: "اختر حجم الشركة",
+        jobTitle: "اختر المسمى الوظيفي",
+        service: "اختر الخدمة",
+        package: "اختر الخدمة أولًا",
+        budget: "اختر نطاق الميزانية",
+        advertisingBudget: "اختر ميزانية الإعلان",
+        summary: "أخبرنا عن نشاطك وما تحتاج إليه والتحديات الحالية والنتيجة التي تتطلع إليها."
+      },
     }
   };
 
@@ -60,16 +90,15 @@
   }
 
   const language = document.documentElement.lang === "ar" ? "ar" : "en";
-  const messages = formMessages[language];
+  const localizedMessages = messages[language];
   const data = window.ZATONA_SITE_DATA;
 
   if (data) {
     renderServices(data.services || [], language);
     renderPricing(data, language);
-    renderServiceOptions(data.services || [], language, messages);
-    renderContact(data.contact || {}, language, messages);
+    renderContact(data.contact || {}, language, localizedMessages);
     renderSocials(data.socials || []);
-    initializeContactForm(data.formspreeEndpoint);
+    initializeRequestForm(data, window.ZATONA_CONFIG?.appsScriptUrl);
   }
 
   const revealItems = document.querySelectorAll(".intro-content, .section-heading, .service-card, .pricing-shell, .work-empty, .contact-card");
@@ -209,7 +238,7 @@
         cta.className = "button button-primary package-cta";
         cta.href = "#contact";
         cta.textContent = locale === "ar" ? "اطلب عرض سعر" : "Request a quotation";
-        cta.dataset.requestService = service.name?.[locale] || service.name?.en;
+        cta.dataset.requestService = service.requestValue || service.id;
         card.append(packageName, price, features, cta);
         packageGrid.append(card);
       });
@@ -313,31 +342,17 @@
     panel.addEventListener("click", (event) => {
       const cta = event.target.closest("[data-request-service]");
       if (!cta) return;
-      const select = document.querySelector("#service-interest");
+      const select = document.querySelector('[name="requestedService"]');
       if (select) {
-        const option = Array.from(select.options).find((item) => item.textContent === cta.dataset.requestService);
-        if (option) select.value = option.value;
+        const option = Array.from(select.options).find((item) => item.value === cta.dataset.requestService);
+        if (option) {
+          select.value = option.value;
+          select.dispatchEvent(new Event("change", { bubbles: true }));
+        }
       }
     });
 
     renderPanel(services[0].id);
-  }
-
-  function renderServiceOptions(services, locale, messages) {
-    const select = document.querySelector("#service-interest");
-    const discussOption = select?.querySelector("[data-discuss-option]");
-    if (!select || !discussOption) return;
-
-    discussOption.textContent = messages.discuss;
-    services.forEach((service) => {
-      const name = service.name?.[locale] || service.name?.en;
-      if (!name) return;
-
-      const option = document.createElement("option");
-      option.value = service.id || service.name?.en || name;
-      option.textContent = name;
-      select.insertBefore(option, discussOption);
-    });
   }
 
   function renderContact(contact, locale, messages) {
@@ -375,124 +390,337 @@
     if (locale === "ar") details.dir = "ltr";
   }
 
-  function initializeContactForm(endpointValue) {
-    const form = document.querySelector("[data-contact-form]");
+  function initializeRequestForm(data, endpointValue) {
+    const form = document.querySelector("[data-request-form]");
     if (!form) return;
 
+    const config = data.requestForm;
+    const localized = messages[language];
     const status = form.querySelector("[data-form-status]");
-    const submitButton = form.querySelector('button[type="submit"]');
+    const steps = Array.from(form.querySelectorAll("[data-form-step]"));
+    const progress = document.querySelector("[data-request-progress]");
+    const backButton = form.querySelector("[data-request-back]");
+    const nextButton = form.querySelector("[data-request-next]");
+    const submitButton = form.querySelector("[data-request-submit]");
     const submitLabel = form.querySelector("[data-submit-label]");
-    const honeypot = form.querySelector('[name="_gotcha"]');
-    if (!status || !submitButton || !submitLabel) return;
+    const successPanel = document.querySelector("[data-request-success]");
+    const responseFrame = document.querySelector('iframe[name="request-response-frame"]');
+    const packageSelect = form.querySelector('[name="requestedPackage"]');
+    const serviceSelect = form.querySelector('[name="requestedService"]');
+    const advertisingField = form.querySelector("[data-advertising-budget-field]");
+    const advertisingSelect = form.querySelector('[name="advertisingBudget"]');
+    const summary = form.querySelector('[name="projectSummary"]');
+    const counter = form.querySelector("[data-character-count]");
+    const tokenField = form.querySelector("[data-submission-token]");
+    const nonceField = form.querySelector("[data-response-nonce]");
+    const startedAtField = form.querySelector("[data-form-started-at]");
+    const parentOriginField = form.querySelector("[data-parent-origin]");
+    const languageField = form.querySelector('[name="websiteLanguage"]');
+    const requestIdNode = successPanel?.querySelector("[data-request-id]");
+    const newRequestButton = successPanel?.querySelector("[data-new-request]");
+    if (!config || !status || !steps.length || !progress || !backButton || !nextButton
+      || !submitButton || !submitLabel || !successPanel || !responseFrame || !packageSelect
+      || !serviceSelect || !advertisingField || !advertisingSelect || !summary || !counter
+      || !tokenField || !nonceField || !startedAtField || !parentOriginField || !languageField
+      || !requestIdNode || !newRequestButton) {
+      console.error("ZATONA request form markup is incomplete.");
+      return;
+    }
 
-    const originalButtonLabel = submitLabel.textContent;
-    let isSubmitting = false;
+    languageField.value = language;
+    parentOriginField.value = window.location.origin;
+    startedAtField.value = String(Date.now());
+    document.documentElement.lang === "ar" ? form.setAttribute("dir", "rtl") : form.setAttribute("dir", "ltr");
+
+    const fillSelect = (select, options, placeholder) => {
+      const currentValue = select.value;
+      select.replaceChildren(new Option(placeholder, "", true, true));
+      select.options[0].disabled = true;
+      options.forEach((item) => {
+        const label = item.label?.[language] || item.label?.en || "";
+        if (item.value && label) select.add(new Option(label, item.value));
+      });
+      if (currentValue && Array.from(select.options).some((option) => option.value === currentValue)) {
+        select.value = currentValue;
+      }
+    };
+
+    fillSelect(form.querySelector('[name="companyIndustry"]'), config.industries || [], localized.placeholders.industry);
+    fillSelect(form.querySelector('[name="companySize"]'), config.companySizes || [], localized.placeholders.companySize);
+    fillSelect(form.querySelector('[name="jobTitle"]'), config.jobTitles || [], localized.placeholders.jobTitle);
+    fillSelect(form.querySelector('[name="estimatedBudget"]'), config.budgets || [], localized.placeholders.budget);
+    fillSelect(advertisingSelect, config.advertisingBudgets || [], localized.placeholders.advertisingBudget);
+
+    const selectableServices = data.services || [];
+    fillSelect(serviceSelect, [
+      ...selectableServices.map((service) => ({
+        value: service.requestValue,
+        label: service.requestName
+      })),
+      { value: "other_custom_request", label: { en: "Other / Custom Request", ar: "خدمة أخرى / طلب مخصص" } }
+    ], localized.placeholders.service);
+
+    const packageOptionsFor = (service) => {
+      if (!service) return [];
+      if (service.id === "design" || service.id === "career") return service.requestPackages || [];
+      if (service.id === "other_custom_request") return config.otherPackages || [];
+      return (service.packages || []).map((item) => ({
+          value: item.requestValue,
+          label: {
+            en: [item.name?.en, typeof item.price === "string" ? item.price : item.price?.en].filter(Boolean).join(" — "),
+            ar: [item.name?.ar || item.name?.en, typeof item.price === "string" ? item.price : item.price?.ar || item.price?.en].filter(Boolean).join(" — ")
+          }
+        }));
+    };
+
+    const updatePackages = () => {
+      const service = selectableServices.find((item) => item.requestValue === serviceSelect.value)
+        || (serviceSelect.value === "other_custom_request" ? { id: "other_custom_request" } : null);
+      const placeholder = service ? localized.choose : localized.placeholders.package;
+      packageSelect.value = "";
+      fillSelect(packageSelect, packageOptionsFor(service), placeholder);
+      packageSelect.disabled = !service;
+      const isAdvertising = service?.requestValue === "paid_advertising";
+      advertisingField.hidden = !isAdvertising;
+      advertisingSelect.disabled = !isAdvertising;
+      advertisingSelect.required = isAdvertising;
+      if (!isAdvertising) advertisingSelect.value = "";
+      clearFieldError(packageSelect);
+      clearFieldError(advertisingSelect);
+    };
+    serviceSelect.addEventListener("change", updatePackages);
+
+    let activeStep = 1;
+    const updateStep = (step, focus = false) => {
+      activeStep = step;
+      steps.forEach((section) => {
+        section.hidden = Number(section.dataset.formStep) !== step;
+      });
+      progress.querySelectorAll("[data-progress-step]").forEach((item) => {
+        const stepNumber = Number(item.dataset.progressStep);
+        if (stepNumber === step) item.setAttribute("aria-current", "step");
+        else item.removeAttribute("aria-current");
+      });
+      backButton.hidden = step === 1;
+      nextButton.hidden = step === steps.length;
+      submitButton.hidden = step !== steps.length;
+      setFormStatus(status, "", "");
+      if (focus) {
+        const heading = steps[step - 1].querySelector("h3");
+        heading?.setAttribute("tabindex", "-1");
+        heading?.focus();
+      }
+    };
+
+    nextButton.addEventListener("click", () => {
+      if (validateRequestStep(steps[activeStep - 1], localized)) updateStep(activeStep + 1, true);
+    });
+    backButton.addEventListener("click", () => updateStep(Math.max(1, activeStep - 1), true));
+
+    const formatCount = () => {
+      const formatter = new Intl.NumberFormat(language === "ar" ? "ar" : "en");
+      counter.textContent = `${formatter.format(summary.value.length)} / ${formatter.format(2000)}`;
+    };
+    summary.addEventListener("input", formatCount);
+    formatCount();
 
     form.addEventListener("input", (event) => {
-      if (event.target instanceof HTMLElement && event.target.hasAttribute("aria-invalid")) {
-        event.target.removeAttribute("aria-invalid");
-      }
+      if (event.target instanceof HTMLElement) clearFieldError(event.target);
+      setFormStatus(status, "", "");
+    });
+    form.addEventListener("change", (event) => {
+      if (event.target instanceof HTMLElement) clearFieldError(event.target);
       setFormStatus(status, "", "");
     });
 
-    form.addEventListener("change", () => setFormStatus(status, "", ""));
+    let isSubmitting = false;
+    let pendingSubmission = null;
+    let tokenPayload = "";
+    let timeoutId = 0;
+    const allowedResponseOrigin = (origin) => {
+      try {
+        const hostname = new URL(origin).hostname;
+        return hostname === "script.google.com" || hostname.endsWith(".googleusercontent.com");
+      } catch {
+        return false;
+      }
+    };
 
-    form.addEventListener("submit", async (event) => {
+    window.addEventListener("message", (event) => {
+      const result = event.data;
+      if (!pendingSubmission || !allowedResponseOrigin(event.origin)
+        || !result || result.type !== "zatona-request-result"
+        || result.nonce !== pendingSubmission.nonce) return;
+      window.clearTimeout(timeoutId);
+      const request = pendingSubmission;
+      pendingSubmission = null;
+      isSubmitting = false;
+      submitButton.disabled = false;
+      backButton.disabled = false;
+      nextButton.disabled = false;
+      submitLabel.textContent = localized.submit;
+      form.removeAttribute("aria-busy");
+      if (result.ok === true && typeof result.requestId === "string"
+        && /^ZA-\d{8}-[A-F0-9]{8}$/.test(result.requestId)) {
+        form.hidden = true;
+        successPanel.hidden = false;
+        requestIdNode.textContent = result.requestId;
+        setFormStatus(status, "", "");
+        successPanel.querySelector("h3")?.focus();
+        return;
+      }
+      setFormStatus(status, localized.error, "error");
+      if (request.payload !== createPayloadFingerprint(form)) {
+        tokenField.value = "";
+        tokenPayload = "";
+      }
+    });
+
+    form.addEventListener("submit", (event) => {
       event.preventDefault();
       if (isSubmitting) return;
+      if (!validateRequestStep(steps[activeStep - 1], localized)) return;
 
-      if (!validateForm(form, status)) return;
-
-      if (honeypot?.value.trim()) {
-        form.reset();
-        setFormStatus(status, formMessages[language].success, "success");
-        return;
-      }
-
-      const endpoint = getFormspreeEndpoint(endpointValue);
+      const endpoint = getAppsScriptEndpoint(endpointValue);
       if (!endpoint) {
-        setFormStatus(status, formMessages[language].notConfigured, "error");
+        setFormStatus(status, localized.configError, "error");
         return;
       }
 
+      const payload = createPayloadFingerprint(form);
+      if (!tokenField.value || tokenPayload !== payload) {
+        tokenField.value = createRequestToken();
+        tokenPayload = payload;
+      }
+      const nonce = createRequestToken();
+      nonceField.value = nonce;
+      parentOriginField.value = window.location.origin;
+      pendingSubmission = { nonce, payload };
       isSubmitting = true;
       submitButton.disabled = true;
-      submitLabel.textContent = formMessages[language].loading;
+      backButton.disabled = true;
+      nextButton.disabled = true;
+      submitLabel.textContent = localized.sending;
       form.setAttribute("aria-busy", "true");
-      setFormStatus(status, formMessages[language].loading, "loading");
-
-      try {
-        const response = await fetch(endpoint, {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(Object.fromEntries(new FormData(form)))
-        });
-
-        if (!response.ok) {
-          throw new Error(`Formspree returned HTTP ${response.status}.`);
-        }
-
-        form.reset();
-        setFormStatus(status, formMessages[language].success, "success");
-      } catch (error) {
-        console.error("ZATONA Formspree submission failed.", error);
-        setFormStatus(status, formMessages[language].error, "error");
-      } finally {
+      setFormStatus(status, localized.sending, "loading");
+      form.action = endpoint;
+      form.target = responseFrame.name;
+      timeoutId = window.setTimeout(() => {
+        if (!pendingSubmission || pendingSubmission.nonce !== nonce) return;
+        pendingSubmission = null;
         isSubmitting = false;
         submitButton.disabled = false;
-        submitLabel.textContent = originalButtonLabel;
+        backButton.disabled = false;
+        nextButton.disabled = false;
+        submitLabel.textContent = localized.submit;
         form.removeAttribute("aria-busy");
-      }
+        setFormStatus(status, localized.timeout, "error");
+      }, 45000);
+      HTMLFormElement.prototype.submit.call(form);
     });
 
-    submitButton.disabled = false;
+    newRequestButton.addEventListener("click", () => {
+      form.reset();
+      tokenField.value = "";
+      tokenPayload = "";
+      nonceField.value = "";
+      startedAtField.value = String(Date.now());
+      parentOriginField.value = window.location.origin;
+      languageField.value = language;
+      successPanel.hidden = true;
+      form.hidden = false;
+      submitButton.disabled = false;
+      backButton.disabled = false;
+      nextButton.disabled = false;
+      updatePackages();
+      clearAllFieldErrors(form);
+      updateStep(1, true);
+      formatCount();
+    });
+    updatePackages();
+    updateStep(1);
   }
 
-  function validateForm(form, status) {
+  function validateRequestStep(step, localized) {
+    if (!step) return false;
     const invalidFields = [];
-    form.querySelectorAll("input[required], select[required], textarea[required]").forEach((field) => {
-      field.removeAttribute("aria-invalid");
+    step.querySelectorAll("input, select, textarea").forEach((field) => {
+      clearFieldError(field);
       const value = field.value.trim();
-      if (value) field.value = value;
       let message = "";
-
-      if (!value) {
-        message = formMessages[language].required;
+      if (field.required && !value) {
+        message = localized.validation.required;
       } else if (field.type === "email" && field.validity.typeMismatch) {
-        message = formMessages[language].invalidEmail;
+        message = localized.validation.invalidEmail;
+      } else if (field.type === "url" && field.validity.typeMismatch) {
+        message = localized.validation.invalidUrl;
+      } else if (field.type === "tel" && !isValidPhone(value)) {
+        message = localized.validation.invalidPhone;
       } else if (field.minLength > 0 && value.length < field.minLength) {
-        message = formMessages[language].tooShort.replace("{count}", String(field.minLength));
+        message = localized.validation.tooShort.replace("{count}", String(field.minLength));
       }
-
       if (message) {
-        field.setAttribute("aria-invalid", "true");
-        invalidFields.push({ field, message });
+        setFieldError(field, message);
+        invalidFields.push(field);
       }
     });
-
-    if (invalidFields.length) {
-      setFormStatus(status, invalidFields[0].message, "error");
-      invalidFields[0].field.focus();
-      return false;
-    }
-    return true;
+    if (!invalidFields.length) return true;
+    invalidFields[0].focus();
+    return false;
   }
 
-  function getFormspreeEndpoint(value) {
-    if (typeof value !== "string" || !value.trim()) return "";
+  function isValidPhone(value) {
+    const digits = value.replace(/\D/g, "");
+    return /^\+?[0-9][0-9\s().-]*$/.test(value) && digits.length >= 7 && digits.length <= 15;
+  }
 
+  function setFieldError(field, message) {
+    field.setAttribute("aria-invalid", "true");
+    const error = document.querySelector(`[data-field-error="${CSS.escape(field.name)}"]`);
+    if (error) error.textContent = message;
+  }
+
+  function clearFieldError(field) {
+    field.removeAttribute("aria-invalid");
+    const error = document.querySelector(`[data-field-error="${CSS.escape(field.name || "")}"]`);
+    if (error) error.textContent = "";
+  }
+
+  function clearAllFieldErrors(form) {
+    form.querySelectorAll("[data-field-error]").forEach((error) => {
+      error.textContent = "";
+    });
+    form.querySelectorAll("[aria-invalid]").forEach((field) => field.removeAttribute("aria-invalid"));
+  }
+
+  function getAppsScriptEndpoint(value) {
+    if (typeof value !== "string" || !value.trim()) return "";
     try {
       const endpoint = new URL(value.trim());
-      const isFormspreeEndpoint = endpoint.protocol === "https:"
-        && endpoint.hostname === "formspree.io"
-        && /^\/f\/[A-Za-z0-9]+$/.test(endpoint.pathname);
-      return isFormspreeEndpoint ? endpoint.href : "";
+      return endpoint.protocol === "https:"
+        && endpoint.hostname === "script.google.com"
+        && /^\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(endpoint.pathname)
+        ? endpoint.href
+        : "";
     } catch {
       return "";
     }
+  }
+
+  function createRequestToken() {
+    if (window.crypto?.randomUUID) return window.crypto.randomUUID();
+    const bytes = new Uint8Array(16);
+    window.crypto.getRandomValues(bytes);
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    const hex = Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+    return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+  }
+
+  function createPayloadFingerprint(form) {
+    return JSON.stringify(Array.from(new FormData(form).entries())
+      .filter(([name]) => !["submissionToken", "responseNonce", "formStartedAt", "parentOrigin", "honeypot"].includes(name))
+      .sort(([a], [b]) => a.localeCompare(b)));
   }
 
   function setFormStatus(status, message, state) {

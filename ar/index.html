@@ -125,23 +125,24 @@
           </div>
           <div class="contact-card">
             <p class="contact-card-label">ابدأ مشروعك</p>
-            <ol class="request-progress" data-request-progress aria-label="تقدم نموذج الطلب">
+            <ol class="request-progress" data-request-progress aria-label="تقدم خطوات نموذج الطلب">
               <li data-progress-step="1" aria-current="step"><span>٠١</span> الشركة</li>
-              <li data-progress-step="2"><span>٠٢</span> التواصل</li>
-              <li data-progress-step="3"><span>٠٣</span> المشروع</li>
+              <li data-progress-step="2"><span>٠٢</span> مسؤول التواصل</li>
+              <li data-progress-step="3"><span>٠٣</span> المشروع والطلب</li>
             </ol>
             <form class="contact-form request-form" data-request-form method="post" novalidate>
               <fieldset class="request-step" data-form-step="1" aria-labelledby="request-step-title-1">
-                <legend class="visually-hidden">معلومات الشركة</legend>
-                <h3 id="request-step-title-1">معلومات الشركة</h3>
+                <legend class="visually-hidden">بيانات الشركة</legend>
+                <h3 id="request-step-title-1">بيانات الشركة</h3>
+                <p class="request-step-description">أخبرنا قليلًا عن شركتك وطبيعة نشاطها.</p>
                 <div class="form-row">
                   <div class="form-field">
                     <label for="company-name">اسم الشركة <span aria-hidden="true">*</span></label>
-                    <input id="company-name" name="companyName" type="text" autocomplete="organization" maxlength="160" required aria-describedby="company-name-error">
+                    <input id="company-name" name="companyName" type="text" autocomplete="organization" maxlength="160" placeholder="أدخل اسم الشركة" required aria-describedby="company-name-error">
                     <small class="field-error" id="company-name-error" data-field-error="companyName"></small>
                   </div>
                   <div class="form-field">
-                    <label for="company-industry">مجال الشركة <span aria-hidden="true">*</span></label>
+                    <label for="company-industry">نشاط الشركة <span aria-hidden="true">*</span></label>
                     <select id="company-industry" name="companyIndustry" required aria-describedby="company-industry-error">
                       <option value="" selected disabled>اختر مجال الشركة</option>
                     </select>
@@ -157,8 +158,8 @@
                     <small class="field-error" id="company-size-error" data-field-error="companySize"></small>
                   </div>
                   <div class="form-field">
-                    <label for="company-website">موقع الشركة أو حسابها الاجتماعي <span class="optional-label">(اختياري)</span></label>
-                    <input id="company-website" name="companyWebsite" type="url" inputmode="url" maxlength="500" placeholder="رابط الموقع أو حساب التواصل" aria-describedby="company-website-error">
+                    <label for="company-website">رابط الشركة أو حسابها الاجتماعي <span class="optional-label">(اختياري)</span></label>
+                    <input id="company-website" name="companyWebsite" type="url" inputmode="url" maxlength="500" placeholder="https://example.com" aria-describedby="company-website-error">
                     <small class="field-error" id="company-website-error" data-field-error="companyWebsite"></small>
                   </div>
                 </div>
@@ -167,10 +168,11 @@
               <fieldset class="request-step" data-form-step="2" aria-labelledby="request-step-title-2" hidden>
                 <legend class="visually-hidden">بيانات مسؤول التواصل</legend>
                 <h3 id="request-step-title-2">بيانات مسؤول التواصل</h3>
+                <p class="request-step-description">أخبرنا كيف يمكننا التواصل مع الشخص المسؤول عن هذا الطلب.</p>
                 <div class="form-row">
                   <div class="form-field">
-                    <label for="contact-person-name">الاسم الكامل <span aria-hidden="true">*</span></label>
-                    <input id="contact-person-name" name="contactName" type="text" autocomplete="name" maxlength="120" required aria-describedby="contact-name-error">
+                    <label for="contact-person-name">الاسم بالكامل <span aria-hidden="true">*</span></label>
+                    <input id="contact-person-name" name="contactName" type="text" autocomplete="name" maxlength="120" placeholder="أدخل الاسم بالكامل" required aria-describedby="contact-name-error">
                     <small class="field-error" id="contact-name-error" data-field-error="contactName"></small>
                   </div>
                   <div class="form-field">
@@ -184,12 +186,12 @@
                 <div class="form-row">
                   <div class="form-field">
                     <label for="contact-email">البريد الإلكتروني <span aria-hidden="true">*</span></label>
-                    <input id="contact-email" name="email" type="email" autocomplete="email" maxlength="254" required aria-describedby="email-error">
+                    <input id="contact-email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="name@example.com" required aria-describedby="email-error">
                     <small class="field-error" id="email-error" data-field-error="email"></small>
                   </div>
                   <div class="form-field">
                     <label for="contact-phone">رقم الهاتف <span aria-hidden="true">*</span></label>
-                    <input id="contact-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" value="+20 " maxlength="32" required aria-describedby="phone-help phone-error">
+                    <input id="contact-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" value="+20 " maxlength="32" placeholder="أدخل رقم الهاتف مع رمز الدولة" required aria-describedby="phone-help phone-error">
                     <small class="field-help" id="phone-help">أضف رمز الاتصال الدولي، ويمكنك تغيير ‎+20.</small>
                     <small class="field-error" id="phone-error" data-field-error="phone"></small>
                   </div>
@@ -197,8 +199,9 @@
               </fieldset>
 
               <fieldset class="request-step" data-form-step="3" aria-labelledby="request-step-title-3" hidden>
-                <legend class="visually-hidden">متطلبات المشروع</legend>
-                <h3 id="request-step-title-3">متطلبات المشروع</h3>
+                <legend class="visually-hidden">تفاصيل المشروع والطلب</legend>
+                <h3 id="request-step-title-3">تفاصيل المشروع والطلب</h3>
+                <p class="request-step-description">اختر الخدمة التي تحتاج إليها واشرح النتيجة التي تسعى إليها.</p>
                 <div class="form-row">
                   <div class="form-field">
                     <label for="requested-service">الخدمة المطلوبة <span aria-hidden="true">*</span></label>
@@ -217,7 +220,7 @@
                 </div>
                 <div class="form-row">
                   <div class="form-field">
-                    <label for="estimated-budget">الميزانية التقديرية للخدمة <span aria-hidden="true">*</span></label>
+                    <label for="estimated-budget">الميزانية التقريبية <span aria-hidden="true">*</span></label>
                     <select id="estimated-budget" name="estimatedBudget" required aria-describedby="estimated-budget-error">
                       <option value="" selected disabled>اختر نطاق الميزانية</option>
                     </select>
@@ -257,7 +260,7 @@
               <p class="form-note request-privacy">سنستخدم معلوماتك لمراجعة طلب الخدمة والرد عليه فقط.</p>
               <div class="request-actions">
                 <button class="button button-secondary request-back" type="button" data-request-back hidden>السابق</button>
-                <button class="button button-primary request-next" type="button" data-request-next>متابعة <span aria-hidden="true">↙</span></button>
+                <button class="button button-primary request-next" type="button" data-request-next>التالي <span aria-hidden="true">↙</span></button>
                 <button class="button button-primary form-submit" type="submit" data-request-submit hidden>
                   <span data-submit-label>إرسال الطلب</span>
                   <span class="form-submit-icon" aria-hidden="true">↙</span>

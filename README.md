@@ -52,6 +52,8 @@ When adding public-facing content, update both language pages and keep their sec
 
 The bilingual three-step request form is designed to submit through a browser-native form POST to a Google Apps Script web app. It targets a hidden iframe and waits for an explicit, nonce-checked backend confirmation before showing success. The endpoint URL is configured once in `assets/js/config.js`. While it is blank, the form validates but displays a configuration error and does not claim that a request was sent.
 
+Form values use stable canonical values and a centralized state object. A session-scoped draft preserves entries when moving between steps or switching language pages; it is cleared only after confirmed success or when the user starts a new request.
+
 The server-side source is `google-apps-script/Code.gs`. Follow [GOOGLE_APPS_SCRIPT_SETUP.md](./GOOGLE_APPS_SCRIPT_SETUP.md) to create the private spreadsheet, initialize its exact schema, deploy the web app, configure the public endpoint URL, and run clearly marked test submissions. Do not add spreadsheet credentials, OAuth secrets, or private account data to this static website. The website endpoint is publicly visible by design; the setup guide documents the resulting abuse limitations and required verification.
 
 The Apps Script logic has isolated Node.js mock tests; run them with `node --test google-apps-script/Code.test.js`. They do not verify a real Google account, deployed web app, or spreadsheet.

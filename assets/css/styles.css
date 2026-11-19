@@ -969,6 +969,14 @@ html[lang="ar"] .contact-card-label {
   font-weight: 600;
 }
 
+.request-step-description {
+  max-width: 44ch;
+  margin: -0.65rem 0 1.1rem;
+  color: #62685b;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
 .request-step .form-row + .form-row {
   margin-block-start: 1rem;
 }
@@ -1092,11 +1100,17 @@ html[lang="ar"] .contact-card-label {
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
+  margin-block-start: 0.25rem;
 }
 
 .request-actions .button {
   min-width: 8.5rem;
   cursor: pointer;
+}
+
+.request-next,
+.request-actions .form-submit {
+  margin-inline-start: auto;
 }
 
 .button-secondary {
@@ -1592,11 +1606,13 @@ html[dir="rtl"] .form-submit-icon {
   }
 
   .request-actions .button {
-    flex: 1 1 auto;
+    flex: 1 1 0;
+    min-width: 0;
   }
 
   .form-submit {
-    width: 100%;
+    width: auto;
+    min-width: 0;
   }
 
   .footer-main,
@@ -1616,6 +1632,22 @@ html[dir="rtl"] .form-submit-icon {
   .footer-bottom {
     flex-direction: column;
     gap: 0.4rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .request-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .request-actions .button {
+    width: 100%;
+  }
+
+  .request-next,
+  .request-actions .form-submit {
+    margin-inline-start: 0;
   }
 }
 

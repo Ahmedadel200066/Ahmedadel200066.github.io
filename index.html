@@ -133,10 +133,11 @@
               <fieldset class="request-step" data-form-step="1" aria-labelledby="request-step-title-1">
                 <legend class="visually-hidden">Company information</legend>
                 <h3 id="request-step-title-1">Company information</h3>
+                <p class="request-step-description">Tell us a little about your company and what it does.</p>
                 <div class="form-row">
                   <div class="form-field">
                     <label for="company-name">Company name <span aria-hidden="true">*</span></label>
-                    <input id="company-name" name="companyName" type="text" autocomplete="organization" maxlength="160" required aria-describedby="company-name-error">
+                    <input id="company-name" name="companyName" type="text" autocomplete="organization" maxlength="160" placeholder="Enter the company name" required aria-describedby="company-name-error">
                     <small class="field-error" id="company-name-error" data-field-error="companyName"></small>
                   </div>
                   <div class="form-field">
@@ -166,10 +167,11 @@
               <fieldset class="request-step" data-form-step="2" aria-labelledby="request-step-title-2" hidden>
                 <legend class="visually-hidden">Contact person</legend>
                 <h3 id="request-step-title-2">Contact person</h3>
+                <p class="request-step-description">Share the best way to reach the person responsible for this request.</p>
                 <div class="form-row">
                   <div class="form-field">
                     <label for="contact-person-name">Full name <span aria-hidden="true">*</span></label>
-                    <input id="contact-person-name" name="contactName" type="text" autocomplete="name" maxlength="120" required aria-describedby="contact-name-error">
+                    <input id="contact-person-name" name="contactName" type="text" autocomplete="name" maxlength="120" placeholder="Enter your full name" required aria-describedby="contact-name-error">
                     <small class="field-error" id="contact-name-error" data-field-error="contactName"></small>
                   </div>
                   <div class="form-field">
@@ -183,12 +185,12 @@
                 <div class="form-row">
                   <div class="form-field">
                     <label for="contact-email">Email address <span aria-hidden="true">*</span></label>
-                    <input id="contact-email" name="email" type="email" autocomplete="email" maxlength="254" required aria-describedby="email-error">
+                    <input id="contact-email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="name@example.com" required aria-describedby="email-error">
                     <small class="field-error" id="email-error" data-field-error="email"></small>
                   </div>
                   <div class="form-field">
                     <label for="contact-phone">Phone number <span aria-hidden="true">*</span></label>
-                    <input id="contact-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" value="+20 " maxlength="32" required aria-describedby="phone-help phone-error">
+                    <input id="contact-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" value="+20 " maxlength="32" placeholder="Include your country calling code" required aria-describedby="phone-help phone-error">
                     <small class="field-help" id="phone-help">Include your country calling code. You can change +20.</small>
                     <small class="field-error" id="phone-error" data-field-error="phone"></small>
                   </div>
@@ -198,6 +200,7 @@
               <fieldset class="request-step" data-form-step="3" aria-labelledby="request-step-title-3" hidden>
                 <legend class="visually-hidden">Project requirements</legend>
                 <h3 id="request-step-title-3">Project requirements</h3>
+                <p class="request-step-description">Choose the service you need and describe the result you are looking for.</p>
                 <div class="form-row">
                   <div class="form-field">
                     <label for="requested-service">Requested service <span aria-hidden="true">*</span></label>

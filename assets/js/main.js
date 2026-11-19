@@ -9,17 +9,28 @@
         invalidEmail: "Enter a valid email address.",
         invalidUrl: "Enter a complete website or social profile URL, including https://.",
         invalidPhone: "Enter a valid international phone number with its country code.",
-        tooShort: "Please enter at least {count} characters."
+        tooShort: "Please enter at least {count} characters.",
+        formIncomplete: "Please review the highlighted fields before submitting."
       },
       submit: "Send request",
       sending: "Sending securely…",
       configError: "The request service is not configured yet. Your information has not been sent.",
       error: "We couldn’t confirm that your request was saved. Your details are still here; you can safely retry.",
       timeout: "We haven’t received confirmation yet. Your request may still be processing; retrying with these same details won’t create a duplicate.",
+      stepDescriptions: {
+        company: "Tell us a little about your company and what it does.",
+        contact: "Share the best way to reach the person responsible for this request.",
+        project: "Choose the service you need and describe the result you are looking for."
+      },
       placeholders: {
+        companyName: "Enter the company name",
         industry: "Choose an industry",
         companySize: "Choose company size",
+        companyWebsite: "Example: https://example.com",
+        contactName: "Enter your full name",
         jobTitle: "Choose a job title",
+        email: "name@example.com",
+        phone: "Include your country calling code",
         service: "Choose a service",
         package: "Select a service first",
         budget: "Choose a budget range",
@@ -35,17 +46,28 @@
         invalidEmail: "يرجى إدخال بريد إلكتروني صحيح.",
         invalidUrl: "أدخل رابطًا كاملًا للموقع أو الحساب الاجتماعي، يبدأ بـ https://.",
         invalidPhone: "أدخل رقم هاتف دوليًا صحيحًا متضمنًا رمز الدولة.",
-        tooShort: "يرجى إدخال {count} أحرف على الأقل."
+        tooShort: "يرجى إدخال {count} أحرف على الأقل.",
+        formIncomplete: "يرجى مراجعة الحقول المحددة قبل إرسال الطلب."
       },
       submit: "إرسال الطلب",
       sending: "جارٍ إرسال الطلب بأمان…",
       configError: "خدمة استقبال الطلبات غير مُعدّة بعد. لم يتم إرسال معلوماتك.",
       error: "تعذر تأكيد حفظ الطلب. ما زالت بياناتك موجودة ويمكنك إعادة المحاولة بأمان.",
       timeout: "لم يصلنا تأكيد بعد. قد يكون الطلب قيد المعالجة؛ إعادة المحاولة بالبيانات نفسها لن تنشئ طلبًا مكررًا.",
+      stepDescriptions: {
+        company: "أخبرنا قليلًا عن شركتك وطبيعة نشاطها.",
+        contact: "أخبرنا كيف يمكننا التواصل مع الشخص المسؤول عن هذا الطلب.",
+        project: "اختر الخدمة التي تحتاج إليها واشرح النتيجة التي تسعى إليها."
+      },
       placeholders: {
-        industry: "اختر مجال الشركة",
+        companyName: "أدخل اسم الشركة",
+        industry: "اختر نشاط الشركة",
         companySize: "اختر حجم الشركة",
+        companyWebsite: "رابط مثال: https://example.com",
+        contactName: "أدخل الاسم بالكامل",
         jobTitle: "اختر المسمى الوظيفي",
+        email: "أدخل البريد الإلكتروني",
+        phone: "أدخل رقم الهاتف مع رمز الدولة",
         service: "اختر الخدمة",
         package: "اختر الخدمة أولًا",
         budget: "اختر نطاق الميزانية",
@@ -427,21 +449,86 @@
       return;
     }
 
+    const formData = {
+      companyName: form.elements.namedItem("companyName").value,
+      companyIndustry: form.elements.namedItem("companyIndustry").value,
+      companySize: form.elements.namedItem("companySize").value,
+      companyWebsite: form.elements.namedItem("companyWebsite").value,
+      contactName: form.elements.namedItem("contactName").value,
+      jobTitle: form.elements.namedItem("jobTitle").value,
+      email: form.elements.namedItem("email").value,
+      phone: form.elements.namedItem("phone").value,
+      requestedService: form.elements.namedItem("requestedService").value,
+      requestedPackage: form.elements.namedItem("requestedPackage").value,
+      estimatedBudget: form.elements.namedItem("estimatedBudget").value,
+      advertisingBudget: form.elements.namedItem("advertisingBudget").value,
+      projectSummary: form.elements.namedItem("projectSummary").value
+    };
+    const formStateKey = "zatona-request-form-v1";
+    const formDataFields = Object.keys(formData);
+    let requestConfirmed = false;
+    const restoreFormData = () => {
+      try {
+        const stored = window.sessionStorage.getItem(formStateKey);
+        if (!stored) return;
+        const saved = JSON.parse(stored);
+        if (!saved || typeof saved !== "object" || Array.isArray(saved)) return;
+        formDataFields.forEach((name) => {
+          if (typeof saved[name] === "string") formData[name] = saved[name];
+        });
+      } catch (error) {
+        console.warn("Could not restore the saved ZATONA request form state.", error);
+      }
+    };
+    const persistFormData = () => {
+      if (requestConfirmed) return;
+      formDataFields.forEach((name) => {
+        formData[name] = form.elements.namedItem(name).value;
+      });
+      try {
+        window.sessionStorage.setItem(formStateKey, JSON.stringify(formData));
+      } catch (error) {
+        console.warn("Could not save the ZATONA request form state.", error);
+      }
+    };
+    const clearFormData = () => {
+      formDataFields.forEach((name) => {
+        formData[name] = "";
+      });
+      try {
+        window.sessionStorage.removeItem(formStateKey);
+      } catch (error) {
+        console.warn("Could not clear the saved ZATONA request form state.", error);
+      }
+    };
+    restoreFormData();
     languageField.value = language;
     parentOriginField.value = window.location.origin;
     startedAtField.value = String(Date.now());
-    document.documentElement.lang === "ar" ? form.setAttribute("dir", "rtl") : form.setAttribute("dir", "ltr");
+    form.setAttribute("dir", language === "ar" ? "rtl" : "ltr");
+    form.elements.namedItem("companyName").placeholder = localized.placeholders.companyName;
+    form.elements.namedItem("companyWebsite").placeholder = localized.placeholders.companyWebsite;
+    form.elements.namedItem("contactName").placeholder = localized.placeholders.contactName;
+    form.elements.namedItem("email").placeholder = localized.placeholders.email;
+    form.elements.namedItem("phone").placeholder = localized.placeholders.phone;
+    summary.placeholder = localized.placeholders.summary;
 
-    const fillSelect = (select, options, placeholder) => {
-      const currentValue = select.value;
+    const fillSelect = (select, options, placeholder, selectedValue = select.value) => {
       select.replaceChildren(new Option(placeholder, "", true, true));
       select.options[0].disabled = true;
       options.forEach((item) => {
-        const label = item.label?.[language] || item.label?.en || "";
-        if (item.value && label) select.add(new Option(label, item.value));
+        const label = item.label?.[language];
+        if (item.value && label) {
+          select.add(new Option(label, item.value));
+        } else {
+          console.error("A ZATONA request option is missing its localized label.", {
+            value: item.value,
+            language
+          });
+        }
       });
-      if (currentValue && Array.from(select.options).some((option) => option.value === currentValue)) {
-        select.value = currentValue;
+      if (selectedValue && Array.from(select.options).some((option) => option.value === selectedValue)) {
+        select.value = selectedValue;
       }
     };
 
@@ -460,6 +547,12 @@
       { value: "other_custom_request", label: { en: "Other / Custom Request", ar: "خدمة أخرى / طلب مخصص" } }
     ], localized.placeholders.service);
 
+    formDataFields
+      .filter((name) => name !== "requestedPackage" && name !== "advertisingBudget")
+      .forEach((name) => {
+        form.elements.namedItem(name).value = formData[name];
+      });
+
     const packageOptionsFor = (service) => {
       if (!service) return [];
       if (service.id === "design" || service.id === "career") return service.requestPackages || [];
@@ -468,7 +561,12 @@
           value: item.requestValue,
           label: {
             en: [item.name?.en, typeof item.price === "string" ? item.price : item.price?.en].filter(Boolean).join(" — "),
-            ar: [item.name?.ar || item.name?.en, typeof item.price === "string" ? item.price : item.price?.ar || item.price?.en].filter(Boolean).join(" — ")
+            ar: [
+              item.name?.ar,
+              typeof item.price === "string"
+                ? item.price.replace(/^EGP\s*([\d,]+)(.*)$/i, "$1 جنيه$2")
+                : item.price?.ar
+            ].filter(Boolean).join(" — ")
           }
         }));
     };
@@ -477,18 +575,26 @@
       const service = selectableServices.find((item) => item.requestValue === serviceSelect.value)
         || (serviceSelect.value === "other_custom_request" ? { id: "other_custom_request" } : null);
       const placeholder = service ? localized.choose : localized.placeholders.package;
-      packageSelect.value = "";
-      fillSelect(packageSelect, packageOptionsFor(service), placeholder);
+      fillSelect(packageSelect, packageOptionsFor(service), placeholder, formData.requestedPackage);
       packageSelect.disabled = !service;
       const isAdvertising = service?.requestValue === "paid_advertising";
       advertisingField.hidden = !isAdvertising;
       advertisingSelect.disabled = !isAdvertising;
       advertisingSelect.required = isAdvertising;
+      fillSelect(advertisingSelect, config.advertisingBudgets || [], localized.placeholders.advertisingBudget, formData.advertisingBudget);
       if (!isAdvertising) advertisingSelect.value = "";
+      formData.requestedPackage = packageSelect.value;
+      formData.advertisingBudget = advertisingSelect.value;
       clearFieldError(packageSelect);
       clearFieldError(advertisingSelect);
     };
-    serviceSelect.addEventListener("change", updatePackages);
+    serviceSelect.addEventListener("change", () => {
+      formData.requestedService = serviceSelect.value;
+      formData.requestedPackage = "";
+      formData.advertisingBudget = "";
+      updatePackages();
+      persistFormData();
+    });
 
     let activeStep = 1;
     const updateStep = (step, focus = false) => {
@@ -512,10 +618,18 @@
       }
     };
 
-    nextButton.addEventListener("click", () => {
-      if (validateRequestStep(steps[activeStep - 1], localized)) updateStep(activeStep + 1, true);
+    nextButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      if (validateRequestStep(steps[activeStep - 1], localized)) {
+        updateStep(activeStep + 1, true);
+      } else {
+        setFormStatus(status, localized.validation.formIncomplete, "error");
+      }
     });
-    backButton.addEventListener("click", () => updateStep(Math.max(1, activeStep - 1), true));
+    backButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      updateStep(Math.max(1, activeStep - 1), true);
+    });
 
     const formatCount = () => {
       const formatter = new Intl.NumberFormat(language === "ar" ? "ar" : "en");
@@ -527,11 +641,14 @@
     form.addEventListener("input", (event) => {
       if (event.target instanceof HTMLElement) clearFieldError(event.target);
       setFormStatus(status, "", "");
+      persistFormData();
     });
     form.addEventListener("change", (event) => {
       if (event.target instanceof HTMLElement) clearFieldError(event.target);
       setFormStatus(status, "", "");
+      persistFormData();
     });
+    window.addEventListener("pagehide", persistFormData);
 
     let isSubmitting = false;
     let pendingSubmission = null;
@@ -562,6 +679,8 @@
       form.removeAttribute("aria-busy");
       if (result.ok === true && typeof result.requestId === "string"
         && /^ZA-\d{8}-[A-F0-9]{8}$/.test(result.requestId)) {
+        requestConfirmed = true;
+        clearFormData();
         form.hidden = true;
         successPanel.hidden = false;
         requestIdNode.textContent = result.requestId;
@@ -579,7 +698,22 @@
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       if (isSubmitting) return;
-      if (!validateRequestStep(steps[activeStep - 1], localized)) return;
+      if (event.submitter !== submitButton) {
+        if (activeStep < steps.length && validateRequestStep(steps[activeStep - 1], localized)) {
+          updateStep(activeStep + 1, true);
+        }
+        return;
+      }
+      if (activeStep !== steps.length) return;
+      const invalidSteps = steps.filter((step) => !validateRequestStep(step, localized, false));
+      const firstInvalidStep = invalidSteps[0];
+      if (firstInvalidStep) {
+        const invalidStepNumber = Number(firstInvalidStep.dataset.formStep);
+        updateStep(invalidStepNumber, true);
+        firstInvalidStep.querySelector('[aria-invalid="true"]')?.focus();
+        setFormStatus(status, localized.validation.formIncomplete, "error");
+        return;
+      }
 
       const endpoint = getAppsScriptEndpoint(endpointValue);
       if (!endpoint) {
@@ -621,12 +755,17 @@
 
     newRequestButton.addEventListener("click", () => {
       form.reset();
+      requestConfirmed = false;
+      clearFormData();
       tokenField.value = "";
       tokenPayload = "";
       nonceField.value = "";
       startedAtField.value = String(Date.now());
       parentOriginField.value = window.location.origin;
       languageField.value = language;
+      formDataFields.forEach((name) => {
+        formData[name] = form.elements.namedItem(name).value;
+      });
       successPanel.hidden = true;
       form.hidden = false;
       submitButton.disabled = false;
@@ -638,10 +777,11 @@
       formatCount();
     });
     updatePackages();
+    persistFormData();
     updateStep(1);
   }
 
-  function validateRequestStep(step, localized) {
+  function validateRequestStep(step, localized, focusInvalid = true) {
     if (!step) return false;
     const invalidFields = [];
     step.querySelectorAll("input, select, textarea").forEach((field) => {
@@ -657,7 +797,8 @@
       } else if (field.type === "tel" && !isValidPhone(value)) {
         message = localized.validation.invalidPhone;
       } else if (field.minLength > 0 && value.length < field.minLength) {
-        message = localized.validation.tooShort.replace("{count}", String(field.minLength));
+        const count = new Intl.NumberFormat(language).format(field.minLength);
+        message = localized.validation.tooShort.replace("{count}", count);
       }
       if (message) {
         setFieldError(field, message);
@@ -665,7 +806,7 @@
       }
     });
     if (!invalidFields.length) return true;
-    invalidFields[0].focus();
+    if (focusInvalid) invalidFields[0].focus();
     return false;
   }
 

@@ -65,13 +65,14 @@
 
   if (data) {
     renderServices(data.services || [], language);
+    renderPricing(data, language);
     renderServiceOptions(data.services || [], language, messages);
     renderContact(data.contact || {}, language, messages);
     renderSocials(data.socials || []);
     initializeContactForm(data.formspreeEndpoint);
   }
 
-  const revealItems = document.querySelectorAll(".intro-content, .section-heading, .work-empty, .contact-card");
+  const revealItems = document.querySelectorAll(".intro-content, .section-heading, .service-card, .pricing-shell, .work-empty, .contact-card");
   if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     const observer = new IntersectionObserver((entries, currentObserver) => {
       entries.forEach((entry) => {
@@ -88,10 +89,24 @@
     });
   }
 
+  const sectionObserver = "IntersectionObserver" in window
+    ? new IntersectionObserver((entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!visible?.target.id) return;
+        document.querySelectorAll(".primary-navigation a[href^='#']").forEach((link) => {
+          link.classList.toggle("is-active", link.getAttribute("href") === `#${visible.target.id}`);
+        });
+      }, { rootMargin: "-20% 0px -55%", threshold: [0.1, 0.25] })
+    : null;
+  if (sectionObserver) {
+    document.querySelectorAll("main > section[id]").forEach((section) => sectionObserver.observe(section));
+  }
+
   function renderServices(services, locale) {
     const list = document.querySelector("[data-services-list]");
-    const emptyState = document.querySelector("[data-services-empty]");
-    if (!list || !emptyState) return;
+    if (!list) return;
 
     services.forEach((service) => {
       const name = service.name?.[locale] || service.name?.en;
@@ -107,8 +122,8 @@
       if (service.visual) {
         const visual = document.createElement("img");
         visual.className = "service-card-visual";
-        visual.src = new URL(`services/${service.visual}`, assetsBase).href;
-        visual.alt = "";
+        visual.src = new URL(`images/services/${service.visual}`, assetsBase).href;
+        visual.alt = service.alt?.[locale] || service.alt?.en || "";
         visual.width = 640;
         visual.height = 640;
         visual.loading = "lazy";
@@ -120,16 +135,192 @@
       title.textContent = name;
       const copy = document.createElement("p");
       copy.textContent = description;
-      const marker = document.createElement("span");
-      marker.className = "service-card-marker";
-      marker.setAttribute("aria-hidden", "true");
-      marker.textContent = "↗";
+      const highlights = document.createElement("ul");
+      highlights.className = "service-card-highlights";
+      (service.highlights?.[locale] || service.highlights?.en || []).forEach((item) => {
+        const highlight = document.createElement("li");
+        highlight.textContent = item;
+        highlights.append(highlight);
+      });
+      const cta = document.createElement("a");
+      cta.className = "service-card-cta";
+      cta.href = "#pricing-details";
+      cta.dataset.pricingService = service.id;
+      cta.textContent = locale === "ar" ? "اكتشف الخدمة" : "Explore Service";
+      const arrow = document.createElement("span");
+      arrow.setAttribute("aria-hidden", "true");
+      arrow.textContent = "↗";
+      cta.append(arrow);
 
-      card.append(title, copy, marker);
+      card.append(title, copy, highlights, cta);
       list.append(card);
     });
 
-    emptyState.hidden = list.childElementCount > 0;
+  }
+
+  function renderPricing(data, locale) {
+    const tabs = document.querySelector("[data-pricing-tabs]");
+    const panel = document.querySelector("[data-pricing-panel]");
+    if (!tabs || !panel) return;
+
+    const services = data.services || [];
+    if (!services.length) {
+      document.querySelector("[data-pricing-shell]")?.setAttribute("hidden", "");
+      return;
+    }
+
+    const displayValue = (value) => typeof value === "string"
+      ? value
+      : value?.[locale] || value?.en || "";
+
+    const renderPanel = (serviceId) => {
+      const service = services.find((item) => item.id === serviceId) || services[0];
+      panel.replaceChildren();
+      panel.id = "pricing-details";
+
+      const serviceHeading = document.createElement("div");
+      serviceHeading.className = "pricing-service-heading";
+      const title = document.createElement("h4");
+      title.textContent = service.name?.[locale] || service.name?.en;
+      const label = document.createElement("p");
+      label.textContent = service.pricingLabel?.[locale] || service.pricingLabel?.en;
+      serviceHeading.append(label, title);
+      panel.append(serviceHeading);
+
+      const packageGrid = document.createElement("div");
+      packageGrid.className = "package-grid";
+      (service.packages || []).forEach((pkg) => {
+        const card = document.createElement("article");
+        card.className = "package-card";
+        if (pkg.featured) card.classList.add("package-card-featured");
+
+        const packageName = document.createElement("h5");
+        packageName.textContent = pkg.name?.[locale] || pkg.name?.en;
+        const price = document.createElement("p");
+        price.className = "package-price";
+        price.textContent = displayValue(pkg.price);
+        const features = document.createElement("ul");
+        (pkg.features?.[locale] || pkg.features?.en || []).forEach((feature) => {
+          const item = document.createElement("li");
+          item.textContent = feature;
+          features.append(item);
+        });
+        const cta = document.createElement("a");
+        cta.className = "button button-primary package-cta";
+        cta.href = "#contact";
+        cta.textContent = locale === "ar" ? "اطلب عرض سعر" : "Request a quotation";
+        cta.dataset.requestService = service.name?.[locale] || service.name?.en;
+        card.append(packageName, price, features, cta);
+        packageGrid.append(card);
+      });
+      panel.append(packageGrid);
+
+      if (service.conditions?.[locale] || service.conditions?.en) {
+        const conditions = document.createElement("div");
+        conditions.className = "pricing-conditions";
+        const conditionTitle = document.createElement("h5");
+        conditionTitle.textContent = locale === "ar" ? "الشروط وملاحظات الخدمة" : "Service conditions";
+        const list = document.createElement("ul");
+        (service.conditions?.[locale] || service.conditions?.en || []).forEach((condition) => {
+          const item = document.createElement("li");
+          item.textContent = condition;
+          list.append(item);
+        });
+        conditions.append(conditionTitle, list);
+        panel.append(conditions);
+      }
+
+      const addOnsTitle = document.createElement("h5");
+      addOnsTitle.className = "add-ons-title";
+      addOnsTitle.textContent = locale === "ar" ? "إضافات وخصومات" : "Add-ons & discounts";
+      panel.append(addOnsTitle);
+
+      const extrasGrid = document.createElement("div");
+      extrasGrid.className = "extras-grid";
+      const extraVisual = document.createElement("div");
+      extraVisual.className = "extra-visual";
+      const extraImage = document.createElement("img");
+      extraImage.src = new URL("images/services/06-photo-video-production.webp", assetsBase).href;
+      extraImage.alt = locale === "ar"
+        ? "رسم توضيحي لخدمات التصوير والفيديو الإضافية"
+        : "Illustration of optional photography and video services";
+      extraImage.width = 504;
+      extraImage.height = 504;
+      extraImage.loading = "lazy";
+      extraImage.decoding = "async";
+      extraVisual.append(extraImage);
+      extrasGrid.append(extraVisual);
+
+      {
+        (data.addOns || []).forEach((addOn) => {
+          const item = document.createElement("div");
+          item.className = "extra-item";
+          const name = document.createElement("span");
+          name.textContent = addOn.name?.[locale] || addOn.name?.en;
+          const price = document.createElement("strong");
+          price.textContent = displayValue(addOn.price);
+          item.append(name, price);
+          extrasGrid.append(item);
+        });
+
+        (data.discounts || []).forEach((discount) => {
+          const item = document.createElement("div");
+          item.className = "extra-item";
+          const name = document.createElement("span");
+          name.textContent = discount.name?.[locale] || discount.name?.en;
+          const value = document.createElement("strong");
+          value.textContent = displayValue(discount.value);
+          item.append(name, value);
+          extrasGrid.append(item);
+        });
+        panel.append(extrasGrid);
+
+        if (data.discountCondition) {
+          const condition = document.createElement("p");
+          condition.className = "discount-condition";
+          condition.textContent = data.discountCondition?.[locale] || data.discountCondition?.en;
+          panel.append(condition);
+        }
+      }
+    };
+
+    services.forEach((service, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "pricing-tab";
+      button.id = `pricing-tab-${service.id}`;
+      button.setAttribute("role", "tab");
+      button.setAttribute("aria-controls", "pricing-details");
+      button.setAttribute("aria-selected", String(index === 0));
+      button.textContent = service.name?.[locale] || service.name?.en;
+      button.addEventListener("click", () => {
+        tabs.querySelectorAll(".pricing-tab").forEach((tab) => tab.setAttribute("aria-selected", "false"));
+        button.setAttribute("aria-selected", "true");
+        renderPanel(service.id);
+      });
+      tabs.append(button);
+    });
+
+    document.querySelector("[data-services-list]")?.addEventListener("click", (event) => {
+      const cta = event.target.closest("[data-pricing-service]");
+      if (!cta) return;
+      event.preventDefault();
+      const tab = document.querySelector(`#pricing-tab-${CSS.escape(cta.dataset.pricingService)}`);
+      tab?.click();
+      document.querySelector("[data-pricing-shell]")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    panel.addEventListener("click", (event) => {
+      const cta = event.target.closest("[data-request-service]");
+      if (!cta) return;
+      const select = document.querySelector("#service-interest");
+      if (select) {
+        const option = Array.from(select.options).find((item) => item.textContent === cta.dataset.requestService);
+        if (option) select.value = option.value;
+      }
+    });
+
+    renderPanel(services[0].id);
   }
 
   function renderServiceOptions(services, locale, messages) {

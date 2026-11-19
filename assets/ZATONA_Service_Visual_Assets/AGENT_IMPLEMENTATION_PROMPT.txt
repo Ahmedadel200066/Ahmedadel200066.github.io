@@ -1,0 +1,57 @@
+ZATONA WEBSITE — SERVICES, VISUAL ASSETS & INTERACTION IMPLEMENTATION
+
+Use the ZATONA Service Visual Assets package and the approved ZATONA Price Proposal PDF as the source of truth.
+
+1. Inspect the existing project before editing. Identify its HTML/CSS/JS architecture, deployment base path, language switcher, RTL/LTR handling, and design tokens. Do not rebuild the website from scratch.
+
+2. Read the package README and use this exact image mapping:
+- 01-social-media-management.webp → Social Media Management & Digital Marketing
+- 02-customer-support.webp → Customer Support
+- 03-paid-advertising.webp → Paid Advertising / Campaign Management
+- 04-graphic-design.webp → Graphic Design
+- 05-cv-and-linkedin.webp → CV & Career Profile Services
+- 06-photo-video-production.webp → Optional field photography / short-video add-ons only
+
+3. Integrate images into the Services section. Use the first five as primary service-card visuals. Use the sixth only in a clearly labeled optional add-ons area or related detail. Do not use one generic image for every service. Keep consistent image ratios, restrained shadows, rounded corners, and responsive sizing. Preserve ZATONA's olive/cream identity. Add meaningful Arabic and English alt text. Lazy-load below-the-fold images and reserve their aspect ratios to prevent layout shifts.
+
+4. Improve the service-card system:
+- Distinct title and concise accurate description.
+- Optional small category label.
+- Clear “Learn more” / “اطلب الخدمة” CTA.
+- Consistent card heights and spacing.
+- Balanced 2–3 column desktop grid depending on viewport; single-column or clean stacked mobile layout.
+- Keep visuals meaningful but not oversized.
+- Do not turn service cards into pricing tables. Link to the relevant pricing/detail section.
+
+5. Preserve proposal details exactly; do not invent or silently alter prices, quantities, inclusions, guarantees, clients, testimonials, or results:
+A. Social media management & digital marketing: monthly packages EGP 4,500 / 8,500 / 15,000. Platforms, post counts, designs, reels, scheduling, comment handling, paid campaign management, reporting and meetings differ by tier.
+B. Customer support: monthly packages EGP 6,500 / 12,500 / 24,000. Coverage is 4 / 8 / 16 hours daily; working days 6 / 6 / 7 days weekly; included conversations up to 600 / 1,800 / 5,000 monthly. Preserve channel and target response-time distinctions.
+C. Paid ads management fees: EGP 3,000 monthly up to EGP 20,000 ad spend; EGP 5,500 monthly for EGP 20,001–60,000; 10% of budget for EGP 60,001–150,000; above that by agreement. State clearly that ad spend is paid directly by the client to advertising platforms and is not included in management fees.
+D. Graphic design: preserve individual and bundle prices listed in the proposal.
+E. CV services: preserve CV, bilingual CV, cover letter and LinkedIn profile prices listed in the proposal.
+F. Add-ons: additional platform, additional 10 posts, additional short video and field photography.
+
+6. Add polished interaction and micro-interactions:
+- Primary and secondary buttons need tasteful hover transitions.
+- On hover: subtle lift (small translateY), slight shadow increase, and restrained background/text color transition.
+- Add visible :focus-visible states for keyboard users.
+- Add pressed feedback with :active.
+- Service cards can subtly lift or change border/shadow on hover; their images may scale slightly, without cropping important details.
+- Add restrained reveal-on-scroll for headings/cards only if it does not delay content; use IntersectionObserver and respect prefers-reduced-motion.
+- Add active navigation state and smooth anchor scrolling, respecting reduced-motion.
+- Touch users must have access to all content and actions without hover.
+- Avoid excessive bouncing, cursor-following effects, parallax, or distracting animation.
+
+7. Accessibility and performance:
+- Preserve semantic HTML, keyboard navigation, visible focus, and sufficient contrast.
+- Avoid heavy animation libraries for simple effects.
+- Prefer CSS transforms and opacity for animation.
+- Content must remain visible if JavaScript fails.
+- Respect prefers-reduced-motion: reduce.
+
+8. Responsive and bilingual QA:
+Test at 1440px, 1366px, 1024px, 768px, and 390px widths.
+Check Arabic RTL and English LTR, image order, card alignment, wrapping, CTA placement, and horizontal overflow.
+
+9. Final report:
+List files changed, exact images and paths used, proposal-vs-website conflicts, remaining design limitations, and responsive/accessibility checks. Do not commit or push without approval.

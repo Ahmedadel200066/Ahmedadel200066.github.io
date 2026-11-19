@@ -12,7 +12,8 @@ Both pages use shared styles and scripts in `assets/`. Their content is kept in 
 ## Brand assets
 
 The supplied source package is preserved in `ZATONA_Assets_Pack/`; the files used by the site are served from `assets/branding/`, `assets/favicon/`, `assets/images/`, `assets/services/`, and `assets/social/`.
-The hero and About illustrations and the social preview are integrated. The service catalog remains empty, so generic service illustrations are not assigned to unconfirmed services. No portfolio project images or self-hosted fonts were supplied.
+The hero and About illustrations and the social preview are integrated. No portfolio project images or self-hosted fonts were supplied.
+The approved service catalog and pricing are maintained in `assets/js/site-data.js`. Primary service visuals are in `assets/images/services/`; the optional photography/video visual is in the same directory.
 
 ## Updating approved content
 

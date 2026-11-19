@@ -6,18 +6,30 @@
     <meta name="theme-color" content="#f3efe4">
     <meta name="description" content="ZATONA — your partner in your digital journey. Build • Innovate • Grow.">
     <title>ZATONA — Build • Innovate • Grow</title>
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="/assets/css/styles.css">
-    <script src="/assets/js/site-data.js" defer></script>
-    <script src="/assets/js/main.js" defer></script>
+    <meta property="og:title" content="ZATONA — Build • Innovate • Grow">
+    <meta property="og:description" content="ZATONA — your partner in your digital journey. Build • Innovate • Grow.">
+    <meta property="og:image" content="./assets/social/og-image.png">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ZATONA — Build • Innovate • Grow">
+    <meta name="twitter:description" content="ZATONA — your partner in your digital journey. Build • Innovate • Grow.">
+    <meta name="twitter:image" content="./assets/social/og-image.png">
+    <link rel="icon" href="./assets/favicon/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="./assets/favicon/favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="./assets/favicon/apple-touch-icon.png">
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <script src="./assets/js/site-data.js" defer></script>
+    <script src="./assets/js/main.js" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <div class="container header-inner">
-        <a class="wordmark" href="/" aria-label="ZATONA home">
-          <span class="wordmark-symbol" aria-hidden="true">ز</span>
-          <span class="wordmark-name">ZATONA</span>
+        <a class="wordmark" href="./" aria-label="ZATONA home">
+          <picture class="wordmark-picture">
+            <source media="(max-width: 620px)" srcset="./assets/branding/zatona-logo-mark.svg">
+            <img src="./assets/branding/zatona-logo-horizontal.svg" alt="" width="800" height="240">
+          </picture>
         </a>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation">
           <span class="menu-toggle-label">Menu</span>
@@ -28,7 +40,7 @@
           <a href="#services">Services</a>
           <a href="#work">Our work</a>
           <a href="#contact">Contact</a>
-          <a class="language-link" href="/ar/" lang="ar" hreflang="ar" aria-label="العربية">عربي <span aria-hidden="true">↗</span></a>
+          <a class="language-link" href="./ar/" lang="ar" hreflang="ar" aria-label="العربية">عربي <span aria-hidden="true">↗</span></a>
         </nav>
       </div>
     </header>
@@ -43,14 +55,8 @@
             <p class="hero-description">Thoughtful digital work starts with a clear direction. Let’s shape what comes next, together.</p>
             <a class="button button-primary" href="#contact">Let’s talk <span aria-hidden="true">↗</span></a>
           </div>
-          <div class="hero-art" aria-hidden="true">
-            <div class="hero-art-orbit orbit-one"></div>
-            <div class="hero-art-orbit orbit-two"></div>
-            <div class="hero-art-core"><span>ز</span></div>
-            <span class="art-caption art-caption-top">ZATONA / زتونة</span>
-            <span class="art-caption art-caption-bottom">BUILD WITH INTENTION</span>
-            <span class="art-cross art-cross-one">+</span>
-            <span class="art-cross art-cross-two">+</span>
+          <div class="hero-art">
+            <img src="./assets/images/hero-visual.svg" alt="Abstract ZATONA brand illustration" width="1600" height="1000" fetchpriority="high" decoding="async">
           </div>
         </div>
         <div class="container hero-foot">
@@ -68,6 +74,7 @@
               <p>ZATONA is a digital services agency for people ready to move an idea forward. We bring clarity, care, and a thoughtful point of view to every digital journey.</p>
               <span class="olive-stamp" aria-hidden="true">زتونة<br><small>GROW WITH PURPOSE</small></span>
             </div>
+            <img class="intro-visual" src="./assets/images/about-zatona.svg" alt="ZATONA abstract brand artwork" width="1200" height="900" loading="lazy" decoding="async">
           </div>
         </div>
       </section>
@@ -158,9 +165,8 @@
 
     <footer class="site-footer">
       <div class="container footer-main">
-        <a class="wordmark footer-wordmark" href="/" aria-label="ZATONA home">
-          <span class="wordmark-symbol" aria-hidden="true">ز</span>
-          <span class="wordmark-name">ZATONA</span>
+        <a class="wordmark footer-wordmark" href="./" aria-label="ZATONA home">
+          <img src="./assets/branding/zatona-logo-horizontal-light.svg" alt="" width="800" height="240">
         </a>
         <p>Build • Innovate • Grow</p>
         <a class="back-to-top" href="#main">Back to top <span aria-hidden="true">↑</span></a>

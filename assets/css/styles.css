@@ -2,11 +2,16 @@
 
 :root {
   color-scheme: light;
-  --olive: #35452d;
-  --olive-soft: #78836a;
-  --cream: #f3efe4;
-  --sand: #dcd4c2;
-  --ink: #25291f;
+  --color-primary: #35452d;
+  --color-background: #f3efe4;
+  --color-secondary: #78836a;
+  --color-muted: #dcd4c2;
+  --color-text: #25291f;
+  --olive: var(--color-primary);
+  --olive-soft: var(--color-secondary);
+  --cream: var(--color-background);
+  --sand: var(--color-muted);
+  --ink: var(--color-text);
   --white: #fff;
   --font-latin: "Manrope", "DM Sans", sans-serif;
   --font-arabic: "Noto Sans Arabic", "Tahoma", sans-serif;
@@ -96,26 +101,25 @@ a:focus-visible {
 .wordmark {
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
   color: var(--olive);
 }
 
-.wordmark-symbol {
-  display: grid;
-  width: 2rem;
-  aspect-ratio: 1;
-  place-items: center;
-  border: 1px solid var(--olive);
-  border-radius: 50%;
-  font-family: var(--font-arabic);
-  font-size: 1.2rem;
-  line-height: 1;
+.wordmark-picture {
+  display: block;
+  width: clamp(8rem, 14vw, 11rem);
 }
 
-.wordmark-name {
-  font-size: 0.86rem;
-  font-weight: 700;
-  letter-spacing: 0.19em;
+.wordmark-picture img,
+.footer-wordmark img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+}
+
+.footer-wordmark img {
+  width: clamp(10rem, 16vw, 13rem);
 }
 
 .primary-navigation {
@@ -265,94 +269,17 @@ html[lang="ar"] .hero h1 {
 
 .hero-art {
   position: relative;
-  display: grid;
-  width: min(100%, 33rem);
-  aspect-ratio: 1;
-  place-items: center;
+  width: min(100%, 38rem);
+  aspect-ratio: 16 / 10;
   justify-self: end;
 }
 
-.hero-art::before,
-.hero-art::after {
-  position: absolute;
-  inset: 12%;
-  border: 1px solid rgb(53 69 45 / 14%);
-  border-radius: 50%;
-  content: "";
-}
-
-.hero-art::after {
-  inset: 24%;
-  border-color: rgb(53 69 45 / 10%);
-}
-
-.hero-art-orbit {
-  position: absolute;
-  width: 80%;
-  aspect-ratio: 1;
-  border: 1px solid var(--olive-soft);
-  border-radius: 50%;
-  opacity: 0.54;
-}
-
-.orbit-one {
-  transform: rotate(-35deg) scaleY(0.43);
-}
-
-.orbit-two {
-  transform: rotate(48deg) scaleY(0.43);
-}
-
-.hero-art-core {
-  display: grid;
-  width: 38%;
-  aspect-ratio: 1;
-  place-items: center;
-  border-radius: 50%;
-  color: var(--cream);
-  background: var(--olive);
-  box-shadow: 0 1.2rem 4rem rgb(37 41 31 / 14%);
-}
-
-.hero-art-core span {
-  font-family: var(--font-arabic);
-  font-size: clamp(3.5rem, 9vw, 7rem);
-  line-height: 1;
-}
-
-.art-caption {
-  position: absolute;
-  color: var(--olive-soft);
-  font-size: 0.55rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-}
-
-.art-caption-top {
-  inset-block-start: 11%;
-  inset-inline-end: 8%;
-}
-
-.art-caption-bottom {
-  inset-block-end: 12%;
-  inset-inline-start: 4%;
-}
-
-.art-cross {
-  position: absolute;
-  color: var(--olive-soft);
-  font-size: 1.3rem;
-  font-weight: 300;
-}
-
-.art-cross-one {
-  inset-block-start: 29%;
-  inset-inline-start: 13%;
-}
-
-.art-cross-two {
-  inset-block-end: 25%;
-  inset-inline-end: 12%;
+.hero-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
 }
 
 .hero-foot {
@@ -447,6 +374,16 @@ html[lang="ar"] .contact-copy h2 em {
   font-size: 0.95rem;
 }
 
+.intro-visual {
+  display: block;
+  width: min(100%, 32rem);
+  height: auto;
+  aspect-ratio: 4 / 3;
+  margin-block-start: 2rem;
+  object-fit: contain;
+  object-position: center;
+}
+
 .olive-stamp {
   display: grid;
   width: 6.4rem;
@@ -517,6 +454,16 @@ html[lang="ar"] .contact-copy h2 em {
   color: var(--olive);
   font-size: 1.2rem;
   font-weight: 600;
+}
+
+.service-card-visual {
+  display: block;
+  width: min(100%, 12rem);
+  height: auto;
+  aspect-ratio: 1;
+  margin-block-end: 1.25rem;
+  object-fit: contain;
+  object-position: center;
 }
 
 .service-card p {
@@ -825,10 +772,6 @@ html[dir="rtl"] .form-submit-icon {
   color: var(--cream);
 }
 
-.footer-wordmark .wordmark-symbol {
-  border-color: #9da58f;
-}
-
 .footer-main > p,
 .back-to-top {
   margin: 0;
@@ -990,9 +933,13 @@ html[dir="rtl"] .form-submit-icon {
   }
 
   .hero-art {
-    width: min(76vw, 21rem);
+    width: min(100%, 33rem);
     justify-self: center;
-    margin-block: -0.5rem 1.5rem;
+    margin-block: 0 1.5rem;
+  }
+
+  .wordmark-picture {
+    width: 2.5rem;
   }
 
   .hero-foot {

@@ -9,6 +9,11 @@ A bilingual, static landing page for ZATONA, built with HTML, CSS, and vanilla J
 
 Both pages use shared styles and scripts in `assets/`. Their content is kept in HTML so the pages remain readable without JavaScript.
 
+## Brand assets
+
+The supplied source package is preserved in `ZATONA_Assets_Pack/`; the files used by the site are served from `assets/branding/`, `assets/favicon/`, `assets/images/`, `assets/services/`, and `assets/social/`.
+The hero and About illustrations and the social preview are integrated. The service catalog remains empty, so generic service illustrations are not assigned to unconfirmed services. No portfolio project images or self-hosted fonts were supplied.
+
 ## Updating approved content
 
 Edit `assets/js/site-data.js` to add finalized services, contact details, and social links. Do not add placeholder accounts, unapproved work, or unconfirmed contact information.
@@ -18,7 +23,8 @@ Each service entry needs English and Arabic values:
 ```js
 {
   name: { en: "Approved service name", ar: "اسم الخدمة المعتمد" },
-  description: { en: "Approved description.", ar: "وصف الخدمة المعتمد." }
+  description: { en: "Approved description.", ar: "وصف الخدمة المعتمد." },
+  visual: "service-visual-01.svg" // optional; only when relevant
 }
 ```
 
@@ -47,4 +53,4 @@ After adding the real endpoint, submit a test inquiry in both languages and veri
 
 ## Publish
 
-In the repository settings, enable GitHub Pages for the branch and folder containing these files (the repository root). The site uses root-relative asset and navigation paths and is intended for a `username.github.io` site. If publishing under a project subpath instead, adjust those paths before deployment.
+In the repository settings, enable GitHub Pages for the branch and folder containing these files (the repository root). Asset and navigation links are page-relative so they work from both a user site and a repository subpath. Canonical metadata is intentionally omitted until the deployed website URL is confirmed.

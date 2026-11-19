@@ -1,4 +1,5 @@
 (() => {
+  const assetsBase = new URL("../", document.currentScript.src);
   const formMessages = {
     en: {
       required: "Please complete this field.",
@@ -102,6 +103,18 @@
 
       const card = document.createElement("article");
       card.className = "service-card";
+
+      if (service.visual) {
+        const visual = document.createElement("img");
+        visual.className = "service-card-visual";
+        visual.src = new URL(`services/${service.visual}`, assetsBase).href;
+        visual.alt = "";
+        visual.width = 640;
+        visual.height = 640;
+        visual.loading = "lazy";
+        visual.decoding = "async";
+        card.append(visual);
+      }
 
       const title = document.createElement("h3");
       title.textContent = name;

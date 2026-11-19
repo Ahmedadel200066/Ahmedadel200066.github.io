@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+<rect width="1200" height="630" fill="#F3EFE4"/>
+<circle cx="1040" cy="80" r="280" fill="#DCD4C2"/>
+<circle cx="1040" cy="80" r="205" fill="#35452D"/>
+<circle cx="1040" cy="80" r="165" fill="none" stroke="#78836A" stroke-width="3" stroke-dasharray="8 16"/>
+<rect x="70" y="70" width="1060" height="490" rx="34" fill="none" stroke="#35452D" stroke-opacity=".18" stroke-width="2"/>
+<text x="120" y="250" fill="#35452D" font-family="Arial, Helvetica, sans-serif" font-size="92" font-weight="700" letter-spacing="5">ZATONA</text>
+<text x="126" y="320" fill="#78836A" font-family="Arial, Helvetica, sans-serif" font-size="28" letter-spacing="5">BUILD • INNOVATE • GROW</text>
+<text x="126" y="405" fill="#25291F" font-family="Arial, Helvetica, sans-serif" font-size="34">Your Partner in Your Digital Journey</text>
+<text x="126" y="485" fill="#78836A" font-family="Arial, Helvetica, sans-serif" font-size="22">Digital Services Agency</text>
+</svg>

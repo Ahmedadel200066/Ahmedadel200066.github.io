@@ -6,18 +6,30 @@
     <meta name="theme-color" content="#f3efe4">
     <meta name="description" content="زتونة — شريكك في رحلتك الرقمية. نبني • نبتكر • ننمو.">
     <title>زتونة — نبني • نبتكر • ننمو</title>
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="/assets/css/styles.css">
-    <script src="/assets/js/site-data.js" defer></script>
-    <script src="/assets/js/main.js" defer></script>
+    <meta property="og:title" content="زتونة — نبني • نبتكر • ننمو">
+    <meta property="og:description" content="زتونة — شريكك في رحلتك الرقمية. نبني • نبتكر • ننمو.">
+    <meta property="og:image" content="../assets/social/og-image.png">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="زتونة — نبني • نبتكر • ننمو">
+    <meta name="twitter:description" content="زتونة — شريكك في رحلتك الرقمية. نبني • نبتكر • ننمو.">
+    <meta name="twitter:image" content="../assets/social/og-image.png">
+    <link rel="icon" href="../assets/favicon/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="../assets/favicon/favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="../assets/favicon/apple-touch-icon.png">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/site-data.js" defer></script>
+    <script src="../assets/js/main.js" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">انتقل إلى المحتوى</a>
     <header class="site-header">
       <div class="container header-inner">
-        <a class="wordmark" href="/ar/" aria-label="الصفحة الرئيسية لزتونة">
-          <span class="wordmark-symbol" aria-hidden="true">ز</span>
-          <span class="wordmark-name">ZATONA</span>
+        <a class="wordmark" href="../ar/" aria-label="الصفحة الرئيسية لزتونة">
+          <picture class="wordmark-picture">
+            <source media="(max-width: 620px)" srcset="../assets/branding/zatona-logo-mark.svg">
+            <img src="../assets/branding/zatona-logo-horizontal.svg" alt="" width="800" height="240">
+          </picture>
         </a>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation">
           <span class="menu-toggle-label">القائمة</span>
@@ -28,7 +40,7 @@
           <a href="#services">الخدمات</a>
           <a href="#work">أعمالنا</a>
           <a href="#contact">تواصل معنا</a>
-          <a class="language-link" href="/" lang="en" hreflang="en" aria-label="English">EN <span aria-hidden="true">↗</span></a>
+          <a class="language-link" href="../" lang="en" hreflang="en" aria-label="English">EN <span aria-hidden="true">↗</span></a>
         </nav>
       </div>
     </header>
@@ -43,14 +55,8 @@
             <p class="hero-description">تبدأ الأعمال الرقمية المدروسة برؤية واضحة. لنبنِ معًا ما يأتي بعدها.</p>
             <a class="button button-primary" href="#contact">لنتحدث <span aria-hidden="true">↙</span></a>
           </div>
-          <div class="hero-art" aria-hidden="true">
-            <div class="hero-art-orbit orbit-one"></div>
-            <div class="hero-art-orbit orbit-two"></div>
-            <div class="hero-art-core"><span>ز</span></div>
-            <span class="art-caption art-caption-top">ZATONA / زتونة</span>
-            <span class="art-caption art-caption-bottom">نبني بهدف</span>
-            <span class="art-cross art-cross-one">+</span>
-            <span class="art-cross art-cross-two">+</span>
+          <div class="hero-art">
+            <img src="../assets/images/hero-visual.svg" alt="رسم تجريدي يعبر عن هوية زتونة" width="1600" height="1000" fetchpriority="high" decoding="async">
           </div>
         </div>
         <div class="container hero-foot">
@@ -68,6 +74,7 @@
               <p>زتونة وكالة خدمات رقمية للأشخاص المستعدين لتطوير أفكارهم. نضيف الوضوح والاهتمام والرؤية المدروسة إلى كل رحلة رقمية.</p>
               <span class="olive-stamp" aria-hidden="true">زتونة<br><small>ننمو بهدف</small></span>
             </div>
+            <img class="intro-visual" src="../assets/images/about-zatona.svg" alt="عمل فني تجريدي بهوية زتونة" width="1200" height="900" loading="lazy" decoding="async">
           </div>
         </div>
       </section>
@@ -158,9 +165,8 @@
 
     <footer class="site-footer">
       <div class="container footer-main">
-        <a class="wordmark footer-wordmark" href="/ar/" aria-label="الصفحة الرئيسية لزتونة">
-          <span class="wordmark-symbol" aria-hidden="true">ز</span>
-          <span class="wordmark-name">ZATONA</span>
+        <a class="wordmark footer-wordmark" href="../ar/" aria-label="الصفحة الرئيسية لزتونة">
+          <img src="../assets/branding/zatona-logo-horizontal-light.svg" alt="" width="800" height="240">
         </a>
         <p>نبني • نبتكر • ننمو</p>
         <a class="back-to-top" href="#main">العودة للأعلى <span aria-hidden="true">↑</span></a>

@@ -10,13 +10,15 @@
         invalidUrl: "Enter a complete website or social profile URL, including https://.",
         invalidPhone: "Enter a valid international phone number with its country code.",
         tooShort: "Please enter at least {count} characters.",
+        summaryTooLongForAdvertisingBudget: "Shorten the project summary to leave room for the advertising budget.",
         formIncomplete: "Please review the highlighted fields before submitting."
       },
       submit: "Send request",
       sending: "Sending securely…",
       configError: "The request service is not configured yet. Your information has not been sent.",
-      error: "We couldn’t confirm that your request was saved. Your details are still here; you can safely retry.",
-      timeout: "We haven’t received confirmation yet. Your request may still be processing; retrying with these same details won’t create a duplicate.",
+      error: "We couldn’t confirm that your request was saved. Your details are still here. Please contact ZATONA before retrying to avoid a duplicate.",
+      timeout: "We couldn’t confirm whether your request was saved. Your details are still here. Please contact ZATONA before retrying to avoid a duplicate.",
+      honeypot: "The request could not be submitted. Please refresh the page and try again.",
       stepDescriptions: {
         company: "Tell us a little about your company and what it does.",
         contact: "Share the best way to reach the person responsible for this request.",
@@ -47,13 +49,15 @@
         invalidUrl: "أدخل رابطًا كاملًا للموقع أو الحساب الاجتماعي، يبدأ بـ https://.",
         invalidPhone: "أدخل رقم هاتف دوليًا صحيحًا متضمنًا رمز الدولة.",
         tooShort: "يرجى إدخال {count} أحرف على الأقل.",
+        summaryTooLongForAdvertisingBudget: "اختصر ملخص المشروع لإتاحة مساحة لميزانية الإعلان.",
         formIncomplete: "يرجى مراجعة الحقول المحددة قبل إرسال الطلب."
       },
       submit: "إرسال الطلب",
       sending: "جارٍ إرسال الطلب بأمان…",
       configError: "خدمة استقبال الطلبات غير مُعدّة بعد. لم يتم إرسال معلوماتك.",
-      error: "تعذر تأكيد حفظ الطلب. ما زالت بياناتك موجودة ويمكنك إعادة المحاولة بأمان.",
-      timeout: "لم يصلنا تأكيد بعد. قد يكون الطلب قيد المعالجة؛ إعادة المحاولة بالبيانات نفسها لن تنشئ طلبًا مكررًا.",
+      error: "تعذر تأكيد حفظ الطلب. ما زالت بياناتك موجودة. يرجى التواصل مع زتونة قبل إعادة الإرسال لتجنب تكرار الطلب.",
+      timeout: "تعذر التأكد من حفظ الطلب. ما زالت بياناتك موجودة. يرجى التواصل مع زتونة قبل إعادة الإرسال لتجنب تكرار الطلب.",
+      honeypot: "تعذر إرسال الطلب. حدّث الصفحة ثم حاول مرة أخرى.",
       stepDescriptions: {
         company: "أخبرنا قليلًا عن شركتك وطبيعة نشاطها.",
         contact: "أخبرنا كيف يمكننا التواصل مع الشخص المسؤول عن هذا الطلب.",
@@ -426,7 +430,6 @@
     const submitButton = form.querySelector("[data-request-submit]");
     const submitLabel = form.querySelector("[data-submit-label]");
     const successPanel = document.querySelector("[data-request-success]");
-    const responseFrame = document.querySelector('iframe[name="request-response-frame"]');
     const packageSelect = form.querySelector('[name="requestedPackage"]');
     const serviceSelect = form.querySelector('[name="requestedService"]');
     const advertisingField = form.querySelector("[data-advertising-budget-field]");
@@ -434,17 +437,14 @@
     const summary = form.querySelector('[name="projectSummary"]');
     const counter = form.querySelector("[data-character-count]");
     const tokenField = form.querySelector("[data-submission-token]");
-    const nonceField = form.querySelector("[data-response-nonce]");
-    const startedAtField = form.querySelector("[data-form-started-at]");
-    const parentOriginField = form.querySelector("[data-parent-origin]");
-    const languageField = form.querySelector('[name="websiteLanguage"]');
+    const honeypot = form.querySelector('[name="website"]');
     const requestIdNode = successPanel?.querySelector("[data-request-id]");
+    const requestReference = successPanel?.querySelector(".request-reference");
     const newRequestButton = successPanel?.querySelector("[data-new-request]");
     if (!config || !status || !steps.length || !progress || !backButton || !nextButton
-      || !submitButton || !submitLabel || !successPanel || !responseFrame || !packageSelect
+      || !submitButton || !submitLabel || !successPanel || !packageSelect
       || !serviceSelect || !advertisingField || !advertisingSelect || !summary || !counter
-      || !tokenField || !nonceField || !startedAtField || !parentOriginField || !languageField
-      || !requestIdNode || !newRequestButton) {
+      || !tokenField || !honeypot || !newRequestButton) {
       console.error("ZATONA request form markup is incomplete.");
       return;
     }
@@ -502,9 +502,6 @@
       }
     };
     restoreFormData();
-    languageField.value = language;
-    parentOriginField.value = window.location.origin;
-    startedAtField.value = String(Date.now());
     form.setAttribute("dir", language === "ar" ? "rtl" : "ltr");
     form.elements.namedItem("companyName").placeholder = localized.placeholders.companyName;
     form.elements.namedItem("companyWebsite").placeholder = localized.placeholders.companyWebsite;
@@ -651,49 +648,7 @@
     window.addEventListener("pagehide", persistFormData);
 
     let isSubmitting = false;
-    let pendingSubmission = null;
     let tokenPayload = "";
-    let timeoutId = 0;
-    const allowedResponseOrigin = (origin) => {
-      try {
-        const hostname = new URL(origin).hostname;
-        return hostname === "script.google.com" || hostname.endsWith(".googleusercontent.com");
-      } catch {
-        return false;
-      }
-    };
-
-    window.addEventListener("message", (event) => {
-      const result = event.data;
-      if (!pendingSubmission || !allowedResponseOrigin(event.origin)
-        || !result || result.type !== "zatona-request-result"
-        || result.nonce !== pendingSubmission.nonce) return;
-      window.clearTimeout(timeoutId);
-      const request = pendingSubmission;
-      pendingSubmission = null;
-      isSubmitting = false;
-      submitButton.disabled = false;
-      backButton.disabled = false;
-      nextButton.disabled = false;
-      submitLabel.textContent = localized.submit;
-      form.removeAttribute("aria-busy");
-      if (result.ok === true && typeof result.requestId === "string"
-        && /^ZA-\d{8}-[A-F0-9]{8}$/.test(result.requestId)) {
-        requestConfirmed = true;
-        clearFormData();
-        form.hidden = true;
-        successPanel.hidden = false;
-        requestIdNode.textContent = result.requestId;
-        setFormStatus(status, "", "");
-        successPanel.querySelector("h3")?.focus();
-        return;
-      }
-      setFormStatus(status, localized.error, "error");
-      if (request.payload !== createPayloadFingerprint(form)) {
-        tokenField.value = "";
-        tokenPayload = "";
-      }
-    });
 
     form.addEventListener("submit", (event) => {
       event.preventDefault();
@@ -721,15 +676,44 @@
         return;
       }
 
-      const payload = createPayloadFingerprint(form);
-      if (!tokenField.value || tokenPayload !== payload) {
-        tokenField.value = createRequestToken();
-        tokenPayload = payload;
+      if (honeypot.value.trim()) {
+        setFormStatus(status, localized.honeypot, "error");
+        return;
       }
-      const nonce = createRequestToken();
-      nonceField.value = nonce;
-      parentOriginField.value = window.location.origin;
-      pendingSubmission = { nonce, payload };
+
+      const advertisingBudget = advertisingSelect.disabled
+        ? ""
+        : advertisingSelect.selectedOptions[0]?.textContent?.trim() || "";
+      const projectSummary = advertisingBudget
+        ? `${formData.projectSummary.trim()}\n\n${language === "ar" ? "الإنفاق الإعلاني الشهري" : "Monthly advertising spend"}: ${advertisingBudget}`
+        : formData.projectSummary.trim();
+      if (projectSummary.length > 2000) {
+        setFieldError(summary, localized.validation.summaryTooLongForAdvertisingBudget);
+        setFormStatus(status, localized.validation.formIncomplete, "error");
+        return;
+      }
+      const payload = {
+        companyName: formData.companyName.trim(),
+        industry: formData.companyIndustry,
+        companySize: formData.companySize,
+        companyWebsite: formData.companyWebsite.trim(),
+        contactName: formData.contactName.trim(),
+        jobTitle: formData.jobTitle,
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        requestedService: formData.requestedService,
+        requestedPackage: formData.requestedPackage,
+        estimatedBudget: formData.estimatedBudget,
+        projectSummary,
+        language,
+        website: ""
+      };
+      const payloadFingerprint = JSON.stringify(payload);
+      const submissionToken = tokenField.value;
+      if (!submissionToken || tokenPayload !== payloadFingerprint) {
+        tokenField.value = createRequestToken();
+        tokenPayload = payloadFingerprint;
+      }
       isSubmitting = true;
       submitButton.disabled = true;
       backButton.disabled = true;
@@ -737,20 +721,63 @@
       submitLabel.textContent = localized.sending;
       form.setAttribute("aria-busy", "true");
       setFormStatus(status, localized.sending, "loading");
-      form.action = endpoint;
-      form.target = responseFrame.name;
-      timeoutId = window.setTimeout(() => {
-        if (!pendingSubmission || pendingSubmission.nonce !== nonce) return;
-        pendingSubmission = null;
+      const controller = new AbortController();
+      const timeoutId = window.setTimeout(() => controller.abort(), 45000);
+      fetch(endpoint, {
+        method: "POST",
+        mode: "cors",
+        credentials: "omit",
+        redirect: "follow",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+        },
+        body: new URLSearchParams({
+          payload: JSON.stringify(payload),
+          submissionToken: tokenField.value
+        }),
+        signal: controller.signal
+      }).then(async (response) => {
+        if (!response.ok || response.type === "opaque") {
+          throw new Error(`Apps Script returned HTTP ${response.status} without a readable response.`);
+        }
+        const result = await response.json();
+        if (!result || typeof result !== "object" || Array.isArray(result)) {
+          throw new Error("Apps Script returned an invalid response.");
+        }
+        if (result.success !== true) {
+          setFormStatus(status, localized.error, "error");
+          return;
+        }
+
+        requestConfirmed = true;
+        clearFormData();
+        form.hidden = true;
+        successPanel.hidden = false;
+        const requestId = [result.requestId, result.serialNumber, result.serial]
+          .find((value) => typeof value === "string" && value.trim());
+        if (requestIdNode && requestReference) {
+          requestIdNode.textContent = requestId || "";
+          requestReference.hidden = !requestId;
+        }
+        setFormStatus(status, "", "");
+        successPanel.querySelector("h3")?.focus();
+      }).catch((error) => {
+        if (error.name === "AbortError") {
+          setFormStatus(status, localized.timeout, "error");
+        } else {
+          console.error("ZATONA Apps Script submission failed.", error);
+          setFormStatus(status, localized.error, "error");
+        }
+      }).finally(() => {
+        window.clearTimeout(timeoutId);
         isSubmitting = false;
         submitButton.disabled = false;
         backButton.disabled = false;
         nextButton.disabled = false;
         submitLabel.textContent = localized.submit;
         form.removeAttribute("aria-busy");
-        setFormStatus(status, localized.timeout, "error");
-      }, 45000);
-      HTMLFormElement.prototype.submit.call(form);
+      });
     });
 
     newRequestButton.addEventListener("click", () => {
@@ -759,14 +786,11 @@
       clearFormData();
       tokenField.value = "";
       tokenPayload = "";
-      nonceField.value = "";
-      startedAtField.value = String(Date.now());
-      parentOriginField.value = window.location.origin;
-      languageField.value = language;
       formDataFields.forEach((name) => {
         formData[name] = form.elements.namedItem(name).value;
       });
       successPanel.hidden = true;
+      if (requestReference) requestReference.hidden = true;
       form.hidden = false;
       submitButton.disabled = false;
       backButton.disabled = false;
@@ -856,12 +880,6 @@
     bytes[8] = (bytes[8] & 0x3f) | 0x80;
     const hex = Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
     return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
-  }
-
-  function createPayloadFingerprint(form) {
-    return JSON.stringify(Array.from(new FormData(form).entries())
-      .filter(([name]) => !["submissionToken", "responseNonce", "formStartedAt", "parentOrigin", "honeypot"].includes(name))
-      .sort(([a], [b]) => a.localeCompare(b)));
   }
 
   function setFormStatus(status, message, state) {

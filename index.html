@@ -247,13 +247,9 @@
 
               <div class="honeypot-field" aria-hidden="true">
                 <label for="request-website">Leave this field empty</label>
-                <input id="request-website" name="honeypot" type="text" tabindex="-1" autocomplete="off">
+                <input id="request-website" name="website" type="text" tabindex="-1" autocomplete="off">
               </div>
-              <input type="hidden" name="websiteLanguage" value="en">
               <input type="hidden" name="submissionToken" data-submission-token>
-              <input type="hidden" name="responseNonce" data-response-nonce>
-              <input type="hidden" name="formStartedAt" data-form-started-at>
-              <input type="hidden" name="parentOrigin" data-parent-origin>
 
               <p class="form-status" data-form-status role="status" aria-live="polite"></p>
               <p class="form-note request-privacy">Your information will only be used to review and respond to this service request.</p>
@@ -273,7 +269,6 @@
               <p class="request-reference">Request ID <strong data-request-id></strong></p>
               <button class="button button-primary" type="button" data-new-request>Start another request</button>
             </section>
-            <iframe class="submission-frame" name="request-response-frame" title="Request submission response" aria-hidden="true" tabindex="-1"></iframe>
             <div class="contact-details" data-contact-details></div>
             <p class="contact-empty" data-contact-empty>Direct contact details are being finalized.</p>
             <div class="social-links" data-social-links aria-label="Social media"></div>

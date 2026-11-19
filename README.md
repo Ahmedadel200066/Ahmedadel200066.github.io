@@ -50,13 +50,15 @@ When adding public-facing content, update both language pages and keep their sec
 
 ## Client request form
 
-The bilingual three-step request form is designed to submit through a browser-native form POST to a Google Apps Script web app. It targets a hidden iframe and waits for an explicit, nonce-checked backend confirmation before showing success. The endpoint URL is configured once in `assets/js/config.js`. While it is blank, the form validates but displays a configuration error and does not claim that a request was sent.
+The bilingual three-step request form submits URL-encoded form data to a Google Apps Script web app. The `payload` parameter contains the JSON object with the agreed company, contact, and project fields. The browser follows the Apps Script redirect and reads its JSON response; success is shown only when the response is readable and contains `success: true`. An opaque response, network error, malformed JSON, or server error never produces a success message.
 
-Form values use stable canonical values and a centralized state object. A session-scoped draft preserves entries when moving between steps or switching language pages; it is cleared only after confirmed success or when the user starts a new request.
+The public endpoint URL is configured in `assets/js/config.js`. Form values use stable canonical values and a centralized state object. A session-scoped draft preserves entries when moving between steps or switching language pages; it is cleared only after confirmed success or when the user starts a new request. An in-progress browser submission is guarded against repeat clicks. On an ambiguous timeout the form retains its values and asks the visitor to contact ZATONA before retrying, since the server may have saved the request without the browser receiving its response.
 
-The server-side source is `google-apps-script/Code.gs`. Follow [GOOGLE_APPS_SCRIPT_SETUP.md](./GOOGLE_APPS_SCRIPT_SETUP.md) to create the private spreadsheet, initialize its exact schema, deploy the web app, configure the public endpoint URL, and run clearly marked test submissions. Do not add spreadsheet credentials, OAuth secrets, or private account data to this static website. The website endpoint is publicly visible by design; the setup guide documents the resulting abuse limitations and required verification.
+The website sends the exact JSON property names `companyName`, `industry`, `companySize`, `companyWebsite`, `contactName`, `jobTitle`, `email`, `phone`, `requestedService`, `requestedPackage`, `estimatedBudget`, `projectSummary`, `language`, and `website`. `website` is the empty honeypot value for a legitimate visitor. The serial number and submission timestamp are not sent by the browser. Do not add spreadsheet credentials, OAuth secrets, or private account data to this static website. The website endpoint is public by design.
 
-The Apps Script logic has isolated Node.js mock tests; run them with `node --test google-apps-script/Code.test.js`. They do not verify a real Google account, deployed web app, or spreadsheet.
+The Apps Script code and spreadsheet schema must match the deployed endpoint contract. See [GOOGLE_APPS_SCRIPT_SETUP.md](./GOOGLE_APPS_SCRIPT_SETUP.md) for the agreed column layout, response requirements, and live verification notes. Do not deploy a different Apps Script source version over the working web app without checking its schema and endpoint behavior.
+
+The repository's earlier Apps Script source has isolated Node.js mock tests; run them with `node --test google-apps-script/Code.test.js`. They do not verify the supplied live endpoint, its A:M schema, or a real spreadsheet.
 
 ## Publish
 

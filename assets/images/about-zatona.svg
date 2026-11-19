@@ -1,7 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 26.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 1200 900" style="enable-background:new 0 0 1200 900;" xml:space="preserve">
-<image style="overflow:visible;" width="1672" height="941" xlink:href="C:\Users\medoa\Downloads\3D Social Media Marketing Dashboard.png"  transform="matrix(0.8943 0 0 0.8943 -147.6304 66.686)">
-</image>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+<rect width="1200" height="900" rx="40" fill="#DCD4C2"/>
+<rect x="90" y="90" width="1020" height="720" rx="34" fill="#F3EFE4"/>
+<circle cx="600" cy="450" r="255" fill="#35452D"/>
+<circle cx="600" cy="450" r="205" fill="#78836A"/>
+<circle cx="600" cy="450" r="155" fill="#F3EFE4"/>
+<path d="M600 295 C490 340 430 440 465 545 C495 635 585 670 670 620 C755 570 790 470 735 385 C705 338 650 305 600 295Z" fill="#35452D"/>
+<path d="M510 535 C545 450 630 395 710 365" fill="none" stroke="#F3EFE4" stroke-width="18" stroke-linecap="round"/>
+<circle cx="600" cy="450" r="15" fill="#DCD4C2"/>
+<g fill="#35452D"><circle cx="220" cy="220" r="12"/><circle cx="980" cy="220" r="12"/><circle cx="220" cy="680" r="12"/><circle cx="980" cy="680" r="12"/></g>
 </svg>

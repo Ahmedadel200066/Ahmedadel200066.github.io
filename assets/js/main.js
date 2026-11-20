@@ -3,6 +3,14 @@
   const messages = {
     en: {
       whatsapp: "Chat on WhatsApp",
+      whatsappPopup: {
+        title: "WhatsApp contact is currently unavailable.",
+        message: "You can reach us through email or our social media accounts."
+      },
+      successModal: {
+        title: "Your Request Has Been Received!",
+        description: "Thank you for choosing ZATONA. We've received your request, and our team will review the details."
+      },
       choose: "Choose an option",
       validation: {
         required: "Please complete this field.",
@@ -42,6 +50,14 @@
     },
     ar: {
       whatsapp: "تواصل عبر واتساب",
+      whatsappPopup: {
+        title: "التواصل عبر واتساب غير متاح حالياً.",
+        message: "يمكنك التواصل معنا عبر البريد الإلكتروني أو حساباتنا على مواقع التواصل الاجتماعي."
+      },
+      successModal: {
+        title: "تم استلام طلبك بنجاح!",
+        description: "شكرًا لثقتك في زتونة. استلمنا تفاصيل طلبك، وسيقوم فريقنا بمراجعته."
+      },
       choose: "اختر خيارًا",
       validation: {
         required: "يرجى إكمال هذا الحقل.",

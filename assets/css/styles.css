@@ -1635,6 +1635,70 @@ html[dir="rtl"] .form-submit-icon {
   }
 }
 
+/* ========================================
+   Social Media Icons
+   ======================================== */
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--cream);
+  border: 1px solid var(--sand);
+  color: var(--olive);
+  transition: all 180ms ease;
+  text-decoration: none;
+}
+
+.social-link:hover,
+.social-link:focus {
+  background: var(--olive);
+  color: var(--white);
+  border-color: var(--olive);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgb(53 69 45 / 20%);
+}
+
+.social-link:active {
+  transform: translateY(0);
+}
+
+.social-link svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.social-link.email-link {
+  width: auto;
+  padding: 0 1rem;
+  border-radius: 2.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  gap: 0.5rem;
+}
+
+.social-link.email-link:hover,
+.social-link.email-link:focus {
+  background: var(--olive);
+  color: var(--white);
+  border-color: var(--olive);
+}
+
+.social-link.email-link svg {
+  width: 18px;
+  height: 18px;
+}
+
 @media (max-width: 420px) {
   .request-actions {
     display: grid;
@@ -1651,7 +1715,264 @@ html[dir="rtl"] .form-submit-icon {
   }
 }
 
+/* ========================================
+   Modal System (WhatsApp Popup & Success/Error Modal)
+   ======================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgb(37 41 31 / 60%);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 200ms ease, visibility 200ms ease;
+}
+
+.modal-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: var(--white);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 20px 40px rgb(37 41 31 / 15%), 0 0 0 1px rgb(53 69 45 / 8%);
+  transform: scale(0.95) translateY(10px);
+  transition: transform 200ms ease;
+}
+
+.modal-overlay.is-open .modal {
+  transform: scale(1) translateY(0);
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .modal,
+  .modal-overlay {
+    transition: none !important;
+  }
+  .modal-overlay.is-open .modal {
+    transform: none;
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.modal-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--cream);
+}
+
+.modal-icon.success {
+  background: rgb(120 131 106 / 15%);
+  color: var(--olive-soft);
+}
+
+.modal-icon.warning {
+  background: rgb(220 212 194 / 30%);
+  color: var(--olive);
+}
+
+.modal-icon.error {
+  background: rgb(180 70 70 / 15%);
+  color: #b44646;
+}
+
+.modal-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.modal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--sand);
+  color: var(--olive);
+  cursor: pointer;
+  transition: all 150ms ease;
+  flex-shrink: 0;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+  background: var(--olive);
+  color: var(--white);
+  border-color: var(--olive);
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.modal-description {
+  margin: 0 0 1.5rem;
+  color: var(--olive-soft);
+  line-height: 1.6;
+}
+
+.modal-request-id {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--cream);
+  border: 1px solid var(--sand);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--ink);
+  margin-bottom: 1.5rem;
+}
+
+.modal-request-id-label {
+  color: var(--olive-soft);
+  font-weight: 500;
+}
+
+.modal-request-id-value {
+  font-family: var(--font-latin);
+  font-weight: 600;
+  color: var(--olive);
+  letter-spacing: 0.02em;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.modal-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition: all 150ms ease;
+  border: none;
+}
+
+.modal-button-primary {
+  background: var(--olive);
+  color: var(--white);
+}
+
+.modal-button-primary:hover,
+.modal-button-primary:focus {
+  background: #2a3623;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgb(53 69 45 / 30%);
+}
+
+.modal-button-secondary {
+  background: var(--cream);
+  color: var(--olive);
+  border: 1px solid var(--sand);
+}
+
+.modal-button-secondary:hover,
+.modal-button-secondary:focus {
+  background: var(--sand);
+  border-color: var(--olive-soft);
+}
+
+/* ========================================
+   Footer Social Section
+   ======================================== */
+.footer-social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-block-start: 1rem;
+}
+
+/* ========================================
+   Contact Section Social Enhancements
+   ======================================== */
+.contact-social {
+  margin-block-start: 1.5rem;
+}
+
+.contact-social .social-links {
+  justify-content: flex-start;
+}
+
+html[lang="ar"] .contact-social .social-links {
+  justify-content: flex-end;
+}
+
+@media (max-width: 420px) {
+  .modal {
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+  }
+  
+  .modal-icon {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .modal-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .modal-title {
+    font-size: 1.125rem;
+  }
+  
+  .modal-actions {
+    flex-direction: column;
+  }
+  
+  .modal-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .social-link,
+  .modal-close,
+  .modal-button {
+    transition: none !important;
+  }
+  
+  .social-link:hover,
+  .modal-close:hover,
+  .modal-button:hover {
+    transform: none !important;
+  }
+  
   *,
   *::before,
   *::after {

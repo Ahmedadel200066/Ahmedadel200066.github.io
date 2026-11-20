@@ -340,9 +340,30 @@ window.ZATONA_SITE_DATA = {
     ar: "الحد الأقصى لإجمالي الخصم: 20% من رسوم الخدمات الشهرية."
   },
   contact: {
-    email: "",
+    email: "zatonaagency@gmail.com",
     phone: "",
     whatsapp: ""
   },
-  socials: []
+  whatsapp: {
+    enabled: false,
+    number: "" // Will be set when WhatsApp becomes available
+  },
+  socials: [
+    {
+      label: "Facebook",
+      url: "https://www.facebook.com/profile.php?id=61596383833719"
+    },
+    {
+      label: "Instagram",
+      url: "https://www.instagram.com/zatonaag/"
+    },
+    {
+      label: "TikTok",
+      url: "https://www.tiktok.com/@zatona.agency?_r=1&_t=ZS-9BY0sBPiHpO"
+    },
+    {
+      label: "LinkedIn",
+      url: "https://www.linkedin.com/in/zatona-agency-02b350450/"
+    }
+  ]
 };

@@ -210,13 +210,83 @@ function saveSubmission_(value, token) {
     throw new Error("Request identifier collision.");
   }
 
-  sheet.getRange(sheet.getLastRow() + 1, 1, 1, REQUEST_HEADERS.length).setValues([row]);
+  // Find the next available row using column A (Serial Number / Request ID) only.
+  // Start at row 3 (after merged headings row 1 and headers row 2).
+  // Ignore content in columns after M (manually managed columns).
+  // Use getLastRow() to limit the range to actual data, not the entire sheet capacity.
+  const firstDataRow = 3;
+  const serialColumn = 1; // Column A
+
+  const lastRow = sheet.getLastRow();
+  if (lastRow < firstDataRow) {
+    // No data rows yet, use row 3
+    const serialNumber = generateNextSerialNumber_(sheet, firstDataRow);
+    row[0] = serialNumber;
+    sheet.getRange(firstDataRow, 1, 1, REQUEST_HEADERS.length).setValues([row]);
+    cache.put(
+      "submission_" + token,
+      JSON.stringify({ requestId: row[0] }),
+      IDEMPOTENCY_CACHE_SECONDS
+    );
+    return { requestId: row[0] };
+  }
+
+  // Read only column A from row 3 to lastRow with data
+  const numRows = lastRow - firstDataRow + 1;
+  const columnAValues = sheet.getRange(firstDataRow, serialColumn, numRows, 1).getValues();
+
+  // Find the first row where column A is empty
+  let nextRow = lastRow + 1; // Default: append after last row
+  for (let i = 0; i < columnAValues.length; i += 1) {
+    const cellValue = columnAValues[i][0];
+    if (cellValue === "" || cellValue === null || cellValue === undefined) {
+      nextRow = firstDataRow + i;
+      break;
+    }
+  }
+
+  // Generate the next serial number based on existing entries in column A
+  const serialNumber = generateNextSerialNumber_(sheet, nextRow);
+  row[0] = serialNumber;
+
+  // Write only to columns A:M (REQUEST_HEADERS.length columns)
+  sheet.getRange(nextRow, 1, 1, REQUEST_HEADERS.length).setValues([row]);
   cache.put(
     "submission_" + token,
     JSON.stringify({ requestId: requestId }),
     IDEMPOTENCY_CACHE_SECONDS
   );
   return { requestId: requestId };
+}
+
+/**
+ * Generates the next serial number based on existing serial numbers in column A.
+ * Serial format: ZA-YYYYMMDD-XXXXXXXX (hex sequence).
+ * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet
+ * @param {number} nextRow - The row where the new entry will be inserted
+ * @return {string} The next serial number
+ */
+function generateNextSerialNumber_(sheet, nextRow) {
+  const today = Utilities.formatDate(new Date(), SPREADSHEET_TIMEZONE, "yyyyMMdd");
+  const prefix = "ZA-" + today + "-";
+
+  // Read existing serial numbers from column A (rows 3 to nextRow - 1)
+  const serialRange = sheet.getRange(3, 1, Math.max(0, nextRow - 3), 1).getValues();
+  let maxSequence = 0;
+  for (let i = 0; i < serialRange.length; i++) {
+    const value = String(serialRange[i][0] || "").trim();
+    if (value.startsWith(prefix)) {
+      const sequenceStr = value.slice(prefix.length);
+      const sequence = parseInt(sequenceStr, 16);
+      if (!isNaN(sequence) && sequence > maxSequence) {
+        maxSequence = sequence;
+      }
+    }
+  }
+
+  const nextSequence = maxSequence + 1;
+  const sequenceHex = nextSequence.toString(16).toUpperCase().padStart(8, "0");
+  return prefix + sequenceHex;
 }
 
 function buildRequestRow_(requestId, submittedAt, value) {

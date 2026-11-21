@@ -240,6 +240,7 @@
       return;
     }
 
+    const showPrices = data.pricing?.showPrices === true;
     const displayValue = (value) => typeof value === "string"
       ? value
       : value?.[locale] || value?.en || "";
@@ -248,6 +249,8 @@
       const service = services.find((item) => item.id === serviceId) || services[0];
       panel.replaceChildren();
       panel.id = "pricing-details";
+      panel.setAttribute("role", "tabpanel");
+      panel.setAttribute("aria-labelledby", `pricing-tab-${service.id}`);
 
       const serviceHeading = document.createElement("div");
       serviceHeading.className = "pricing-service-heading";
@@ -267,9 +270,19 @@
 
         const packageName = document.createElement("h5");
         packageName.textContent = pkg.name?.[locale] || pkg.name?.en;
-        const price = document.createElement("p");
-        price.className = "package-price";
-        price.textContent = displayValue(pkg.price);
+        card.append(packageName);
+        if (pkg.featured && ["social", "support"].includes(service.id)) {
+          const badge = document.createElement("span");
+          badge.className = "package-badge";
+          badge.textContent = locale === "ar" ? "الأكثر طلبًا" : "Most popular";
+          card.append(badge);
+        }
+        if (showPrices && pkg.price) {
+          const price = document.createElement("p");
+          price.className = "package-price";
+          price.textContent = displayValue(pkg.price);
+          card.append(price);
+        }
         const features = document.createElement("ul");
         (pkg.features?.[locale] || pkg.features?.en || []).forEach((feature) => {
           const item = document.createElement("li");
@@ -281,7 +294,7 @@
         cta.href = "#contact";
         cta.textContent = locale === "ar" ? "اطلب عرض سعر" : "Request a quotation";
         cta.dataset.requestService = service.requestValue || service.id;
-        card.append(packageName, price, features, cta);
+        card.append(features, cta);
         packageGrid.append(card);
       });
       panel.append(packageGrid);
@@ -303,7 +316,7 @@
 
       const addOnsTitle = document.createElement("h5");
       addOnsTitle.className = "add-ons-title";
-      addOnsTitle.textContent = locale === "ar" ? "إضافات وخصومات" : "Add-ons & discounts";
+      addOnsTitle.textContent = locale === "ar" ? "خدمات إضافية حسب احتياجك" : "Additional services, shaped around you";
       panel.append(addOnsTitle);
 
       const extrasGrid = document.createElement("div");
@@ -328,12 +341,22 @@
           item.className = "extra-item";
           const name = document.createElement("span");
           name.textContent = addOn.name?.[locale] || addOn.name?.en;
-          const price = document.createElement("strong");
-          price.textContent = displayValue(addOn.price);
-          item.append(name, price);
+          item.append(name);
+          if (showPrices && addOn.price) {
+            const price = document.createElement("strong");
+            price.textContent = displayValue(addOn.price);
+            item.append(price);
+          }
           extrasGrid.append(item);
         });
 
+        panel.append(extrasGrid);
+        const discountTitle = document.createElement("h5");
+        discountTitle.className = "add-ons-title";
+        discountTitle.textContent = locale === "ar" ? "خصومات الاشتراك والجمع بين الخدمات" : "Subscription & service bundle discounts";
+        panel.append(discountTitle);
+        const discountsGrid = document.createElement("div");
+        discountsGrid.className = "discounts-grid";
         (data.discounts || []).forEach((discount) => {
           const item = document.createElement("div");
           item.className = "extra-item";
@@ -342,9 +365,9 @@
           const value = document.createElement("strong");
           value.textContent = displayValue(discount.value);
           item.append(name, value);
-          extrasGrid.append(item);
+          discountsGrid.append(item);
         });
-        panel.append(extrasGrid);
+        panel.append(discountsGrid);
 
         if (data.discountCondition) {
           const condition = document.createElement("p");
@@ -352,6 +375,20 @@
           condition.textContent = data.discountCondition?.[locale] || data.discountCondition?.en;
           panel.append(condition);
         }
+      }
+      if (data.terms?.[locale]?.length) {
+        const details = document.createElement("details");
+        details.className = "service-terms";
+        const summary = document.createElement("summary");
+        summary.textContent = locale === "ar" ? "كيف نعمل: شروط الخدمة" : "How we work: service terms";
+        const list = document.createElement("ul");
+        data.terms[locale].forEach((text) => {
+          const item = document.createElement("li");
+          item.textContent = text;
+          list.append(item);
+        });
+        details.append(summary, list);
+        panel.append(details);
       }
     };
 
@@ -363,13 +400,34 @@
       button.setAttribute("role", "tab");
       button.setAttribute("aria-controls", "pricing-details");
       button.setAttribute("aria-selected", String(index === 0));
+      button.tabIndex = index === 0 ? 0 : -1;
       button.textContent = service.name?.[locale] || service.name?.en;
       button.addEventListener("click", () => {
-        tabs.querySelectorAll(".pricing-tab").forEach((tab) => tab.setAttribute("aria-selected", "false"));
+        tabs.querySelectorAll(".pricing-tab").forEach((tab) => {
+          tab.setAttribute("aria-selected", "false");
+          tab.tabIndex = -1;
+        });
+        button.tabIndex = 0;
         button.setAttribute("aria-selected", "true");
         renderPanel(service.id);
       });
       tabs.append(button);
+    });
+
+    tabs.addEventListener("keydown", (event) => {
+      const buttons = Array.from(tabs.querySelectorAll('[role="tab"]'));
+      const index = buttons.indexOf(document.activeElement);
+      if (index < 0) return;
+      const direction = locale === "ar" ? -1 : 1;
+      let next;
+      if (event.key === "ArrowRight") next = (index + direction + buttons.length) % buttons.length;
+      if (event.key === "ArrowLeft") next = (index - direction + buttons.length) % buttons.length;
+      if (event.key === "Home") next = 0;
+      if (event.key === "End") next = buttons.length - 1;
+      if (next === undefined) return;
+      event.preventDefault();
+      buttons[next].focus();
+      buttons[next].click();
     });
 
     document.querySelector("[data-services-list]")?.addEventListener("click", (event) => {
@@ -568,20 +626,27 @@
 
     const packageOptionsFor = (service) => {
       if (!service) return [];
-      if (service.id === "design" || service.id === "career") return service.requestPackages || [];
+      if (service.id === "design" || service.id === "career") {
+        return (service.requestPackages || []).map((item) => ({
+          value: item.value,
+          label: Object.fromEntries(["en", "ar"].map((locale) => {
+            const price = data.pricing?.showPrices === true
+              ? (typeof item.price === "string" ? item.price : item.price?.[locale])
+              : "";
+            return [locale, [item.label?.[locale], price].filter(Boolean).join(" / ")];
+          }))
+        }));
+      }
       if (service.id === "other_custom_request") return config.otherPackages || [];
       return (service.packages || []).map((item) => ({
-          value: item.requestValue,
-          label: {
-            en: [item.name?.en, typeof item.price === "string" ? item.price : item.price?.en].filter(Boolean).join(" — "),
-            ar: [
-              item.name?.ar,
-              typeof item.price === "string"
-                ? item.price.replace(/^EGP\s*([\d,]+)(.*)$/i, "$1 جنيه$2")
-                : item.price?.ar
-            ].filter(Boolean).join(" — ")
-          }
-        }));
+        value: item.requestValue,
+        label: Object.fromEntries(["en", "ar"].map((locale) => {
+          const price = data.pricing?.showPrices === true
+            ? (typeof item.price === "string" ? item.price : item.price?.[locale])
+            : "";
+          return [locale, [item.name?.[locale], price].filter(Boolean).join(" / ")];
+        }))
+      }));
     };
 
     const updatePackages = () => {

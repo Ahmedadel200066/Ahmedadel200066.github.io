@@ -1,3 +1,5 @@
+// Quote-only catalog. To restore prices, add optional price fields and enable pricing.showPrices.
+// Keep prices separate from names, feature text and request-option labels.
 window.ZATONA_SITE_DATA = {
   services: [
     {
@@ -5,34 +7,26 @@ window.ZATONA_SITE_DATA = {
       requestValue: "social_media_management",
       requestName: { en: "Social Media Management & Digital Marketing", ar: "إدارة السوشيال ميديا والتسويق الرقمي" },
       name: { en: "Social Media Management", ar: "إدارة وسائل التواصل والتسويق الرقمي" },
-      description: {
-        en: "Consistent planning, content, scheduling, and community engagement across your social channels.",
-        ar: "تخطيط ومحتوى وجدولة ومتابعة تفاعل متناسقة عبر منصات التواصل الخاصة بك."
-      },
+      description: { en: "Consistent planning, content, scheduling, and community engagement across your social channels.", ar: "تخطيط ومحتوى وجدولة ومتابعة تفاعل متناسقة عبر منصات التواصل الخاصة بك." },
       highlights: {
         en: ["Monthly content calendar", "Post writing and design", "Scheduling and engagement"],
         ar: ["تقويم محتوى شهري", "كتابة وتصميم المنشورات", "الجدولة ومتابعة التفاعل"]
       },
       visual: "01-social-media-management.webp",
-      alt: {
-        en: "Illustration of social media content planning",
-        ar: "رسم توضيحي لتخطيط محتوى وسائل التواصل"
-      },
+      alt: { en: "Illustration of social media content planning", ar: "رسم توضيحي لتخطيط محتوى وسائل التواصل" },
       pricingLabel: { en: "Monthly packages", ar: "الباقات الشهرية" },
       packages: [
         {
           requestValue: "basic",
-          name: { en: "Basic", ar: "أساسية" },
-          price: "EGP 4,500",
+          name: { en: "Basic", ar: "الأساسية" },
           features: {
             en: ["Facebook and Instagram", "12 monthly posts", "Content writing", "12 post designs", "Monthly content calendar", "Weekly scheduling and engagement monitoring", "Monthly performance report"],
             ar: ["فيسبوك وإنستغرام", "12 منشورًا شهريًا", "كتابة المحتوى", "12 تصميم منشور", "تقويم محتوى شهري", "جدولة أسبوعية ومتابعة التفاعل", "تقرير أداء شهري"]
           }
         },
         {
-          requestValue: "professional",
-          name: { en: "Professional", ar: "احترافية" },
-          price: "EGP 8,500",
+          requestValue: "advanced",
+          name: { en: "Advanced", ar: "المتقدمة" },
           featured: true,
           features: {
             en: ["Facebook, Instagram, and TikTok", "20 monthly posts", "Content writing", "20 post designs", "4 short videos", "Monthly content calendar", "Daily scheduling and engagement monitoring", "Comment replies", "Optional paid campaign management by agreement", "Monthly performance report", "Follow-up meeting every two months"],
@@ -40,9 +34,8 @@ window.ZATONA_SITE_DATA = {
           }
         },
         {
-          requestValue: "advanced",
-          name: { en: "Advanced", ar: "متقدمة" },
-          price: "EGP 15,000",
+          requestValue: "professional",
+          name: { en: "Professional", ar: "الاحترافية" },
           features: {
             en: ["Facebook, Instagram, TikTok, and LinkedIn", "30 monthly posts", "Content writing", "30 post designs", "8 short videos", "Monthly content calendar with review meeting", "Daily scheduling and engagement monitoring", "Comment replies and messages", "Up to 2 advertising campaigns monthly", "Weekly performance reporting and monthly analysis", "Monthly follow-up meeting"],
             ar: ["فيسبوك وإنستغرام وتيك توك ولينكدإن", "30 منشورًا شهريًا", "كتابة المحتوى", "30 تصميم منشور", "8 مقاطع قصيرة", "تقويم محتوى شهري مع اجتماع مراجعة", "جدولة ومتابعة تفاعل يومية", "الرد على التعليقات والرسائل", "حتى حملتين إعلانيين شهريًا", "تقارير أداء أسبوعية وتحليل شهري", "اجتماع متابعة شهري"]
@@ -50,8 +43,8 @@ window.ZATONA_SITE_DATA = {
         }
       ],
       conditions: {
-        en: ["Field photography and professional video production are not included.", "Advertising budgets are paid directly by the client to advertising platforms.", "Advertising spend is not included in the package price."],
-        ar: ["التصوير الميداني وإنتاج الفيديو الاحترافي غير شاملين.", "ميزانيات الإعلانات تُدفع مباشرة من العميل لمنصات الإعلان.", "الإنفاق الإعلاني غير مشمول في سعر الباقة."]
+        en: ["Field photography and professional video production are available separately on request.", "The client pays advertising spend directly to the platforms, separately from agency management."],
+        ar: ["التصوير الميداني وإنتاج الفيديو الاحترافي متاحان بشكل منفصل عند الطلب.", "يدفع العميل ميزانية الإعلانات مباشرة للمنصات، بشكل منفصل عن إدارة الوكالة."]
       }
     },
     {
@@ -59,10 +52,7 @@ window.ZATONA_SITE_DATA = {
       requestValue: "customer_support",
       requestName: { en: "Customer Support", ar: "خدمة العملاء" },
       name: { en: "Customer Support", ar: "خدمة دعم العملاء" },
-      description: {
-        en: "Reliable customer communication, order follow-up, complaint handling, and recurring issue reporting.",
-        ar: "تواصل موثوق مع العملاء، ومتابعة الطلبات والحجوزات، ومعالجة الشكاوى وإعداد تقارير المشكلات المتكررة."
-      },
+      description: { en: "Reliable customer communication, order follow-up, complaint handling, and recurring issue reporting.", ar: "تواصل موثوق مع العملاء، ومتابعة الطلبات والحجوزات، ومعالجة الشكاوى وإعداد تقارير المشكلات المتكررة." },
       highlights: {
         en: ["Messages and comments", "Orders and bookings", "Complaint escalation"],
         ar: ["الرسائل والتعليقات", "الطلبات والحجوزات", "تصعيد الشكاوى"]
@@ -73,17 +63,15 @@ window.ZATONA_SITE_DATA = {
       packages: [
         {
           requestValue: "basic",
-          name: { en: "Basic", ar: "أساسية" },
-          price: "EGP 6,500",
+          name: { en: "Basic", ar: "الأساسية" },
           features: {
             en: ["4 hours daily", "6 working days weekly", "2 channels", "Replying to messages and comments", "Initial complaint recording and escalation", "Target response time: within 15 minutes during working hours", "Up to 600 conversations monthly", "Weekly reports"],
             ar: ["4 ساعات يوميًا", "6 أيام عمل أسبوعيًا", "قناتان", "الرد على الرسائل والتعليقات", "تسجيل الشكاوى الأولي وتصعيدها", "استهداف الرد خلال 15 دقيقة أثناء ساعات العمل", "حتى 600 محادثة شهريًا", "تقارير أسبوعية"]
           }
         },
         {
-          requestValue: "integrated",
-          name: { en: "Integrated", ar: "متكاملة" },
-          price: "EGP 12,500",
+          requestValue: "advanced",
+          name: { en: "Advanced", ar: "المتقدمة" },
           featured: true,
           features: {
             en: ["8 hours daily", "6 working days weekly", "Up to 4 channels: WhatsApp, Facebook, Instagram, and email", "Replying to messages and comments", "Order and booking follow-up", "Complaint handling", "After-sales follow-up", "Target response time: within 10 minutes during working hours", "Up to 1,800 conversations monthly", "Weekly reports"],
@@ -91,9 +79,8 @@ window.ZATONA_SITE_DATA = {
           }
         },
         {
-          requestValue: "advanced",
-          name: { en: "Advanced", ar: "متقدمة" },
-          price: "EGP 24,000",
+          requestValue: "integrated",
+          name: { en: "Complete", ar: "المتكاملة" },
           features: {
             en: ["16 hours daily across two shifts", "7 working days weekly", "All channels and comments", "Replying to messages and comments", "Order and booking follow-up", "Complaint handling with escalation scenarios", "After-sales follow-up", "Target response time: within 5 minutes during working hours", "Up to 5,000 conversations monthly", "Daily reports and monthly analysis of recurring issues", "Quality supervisor"],
             ar: ["16 ساعة يوميًا على ورديتين", "7 أيام عمل أسبوعيًا", "جميع القنوات والتعليقات", "الرد على الرسائل والتعليقات", "متابعة الطلبات والحجوزات", "معالجة الشكاوى مع سيناريوهات التصعيد", "متابعة ما بعد البيع", "استهداف الرد خلال 5 دقائق أثناء ساعات العمل", "حتى 5,000 محادثة شهريًا", "تقارير يومية وتحليل شهري للمشكلات المتكررة", "مشرف جودة"]
@@ -101,8 +88,8 @@ window.ZATONA_SITE_DATA = {
         }
       ],
       conditions: {
-        en: ["Every additional 100 conversations above the included limit: EGP 600.", "Initial setup and training fee: EGP 1,500.", "The setup and training fee is waived for subscriptions of six months or longer."],
-        ar: ["كل 100 محادثة إضافية فوق الحد المشمول: 600 جنيه.", "رسوم التأسيس والتدريب الأولية: 1,500 جنيه.", "يُعفى من رسوم التأسيس والتدريب المشتركون لمدة ستة أشهر أو أكثر."]
+        en: ["Additional conversations can be arranged in blocks of 100 beyond the included monthly allowance.", "One-time setup and training covers response templates and case-handling scenarios; included at no setup charge with subscriptions of 6 months or longer.", "Response-time targets apply during the agreed working hours."],
+        ar: ["يمكن إضافة المحادثات في مجموعات من 100 محادثة فوق الحد الشهري المشمول.", "يشمل التجهيز والتدريب الأولي إعداد الردود الجاهزة وسيناريوهات الحالات؛ ويُعفى من رسوم التجهيز عند الاشتراك لمدة 6 أشهر أو أكثر.", "أزمنة الرد المستهدفة تطبق خلال ساعات العمل المتفق عليها."]
       }
     },
     {
@@ -110,70 +97,59 @@ window.ZATONA_SITE_DATA = {
       requestValue: "paid_advertising",
       requestName: { en: "Paid Advertising", ar: "إدارة الإعلانات الممولة" },
       name: { en: "Paid Advertising", ar: "الإعلانات المدفوعة" },
-      description: {
-        en: "Campaign setup, audience targeting, optimization, and transparent management reporting.",
-        ar: "إعداد الحملات واستهداف الجمهور والتحسين والتقارير الشفافة لإدارة الحملات."
-      },
+      description: { en: "Campaign setup, audience targeting, optimization, and transparent management reporting.", ar: "إعداد الحملات واستهداف الجمهور والتحسين والتقارير الشفافة لإدارة الحملات." },
       highlights: {
         en: ["Account and pixel setup", "Audience targeting", "Testing and optimization"],
         ar: ["إعداد الحساب والبكسل", "استهداف الجمهور", "الاختبار والتحسين"]
       },
       visual: "03-paid-advertising.webp",
       alt: { en: "Illustration of paid advertising campaign management", ar: "رسم توضيحي لإدارة حملات الإعلانات المدفوعة" },
-      pricingLabel: { en: "Monthly management fees", ar: "رسوم الإدارة الشهرية" },
+      pricingLabel: { en: "Campaign management tiers", ar: "مستويات إدارة الحملات" },
       packages: [
         {
           requestValue: "ad_spend_under_20000",
-          name: { en: "Up to EGP 20,000 budget", ar: "ميزانية حتى 20,000 جنيه" },
-          price: { en: "EGP 3,000 / month", ar: "3,000 جنيه شهريًا" },
+          name: { en: "Management tier 1", ar: "مستوى الإدارة 1" },
           features: {
-            en: ["Management fee only", "Advertising budget paid by the client", "Included work applies to all management tiers"],
-            ar: ["رسوم الإدارة فقط", "ميزانية الإعلان يدفعها العميل", "تطبق أعمال الباقة المشمولة على جميع فئات الإدارة"]
+            en: ["Campaign scope agreed around your advertising budget", "4 advertising creatives per month", "Account setup, tracking and campaign planning", "A/B testing and weekly optimization", "Monthly performance report and recommendations"],
+            ar: ["نطاق الحملة يحدد بالاتفاق وفق ميزانيتك الإعلانية", "4 تصاميم إعلانية شهريًا", "إعداد الحساب والتتبع وتخطيط الحملات", "اختبار A/B وتحسين أسبوعي", "تقرير أداء شهري وتوصيات"]
           }
         },
         {
           requestValue: "ad_spend_20001_60000",
-          name: { en: "EGP 20,001–60,000 budget", ar: "ميزانية 20,001–60,000 جنيه" },
-          price: { en: "EGP 5,500 / month", ar: "5,500 جنيه شهريًا" },
-          featured: true,
+          name: { en: "Management tier 2", ar: "مستوى الإدارة 2" },
           features: {
-            en: ["Management fee only", "Advertising budget paid by the client", "Included work applies to all management tiers"],
-            ar: ["رسوم الإدارة فقط", "ميزانية الإعلان يدفعها العميل", "تطبق أعمال الباقة المشمولة على جميع فئات الإدارة"]
+            en: ["Campaign scope agreed around your advertising budget", "4 advertising creatives per month", "Account setup, tracking and campaign planning", "A/B testing and weekly optimization", "Monthly performance report and recommendations"],
+            ar: ["نطاق الحملة يحدد بالاتفاق وفق ميزانيتك الإعلانية", "4 تصاميم إعلانية شهريًا", "إعداد الحساب والتتبع وتخطيط الحملات", "اختبار A/B وتحسين أسبوعي", "تقرير أداء شهري وتوصيات"]
           }
         },
         {
           requestValue: "ad_spend_60001_150000",
-          name: { en: "EGP 60,001–150,000 budget", ar: "ميزانية 60,001–150,000 جنيه" },
-          price: { en: "10% of budget", ar: "10% من الميزانية" },
+          name: { en: "Management tier 3", ar: "مستوى الإدارة 3" },
           features: {
-            en: ["Management fee only", "Advertising budget paid by the client", "Included work applies to all management tiers"],
-            ar: ["رسوم الإدارة فقط", "ميزانية الإعلان يدفعها العميل", "تطبق أعمال الباقة المشمولة على جميع فئات الإدارة"]
+            en: ["Campaign scope agreed around your advertising budget", "8 advertising creatives per month", "Account setup, tracking and campaign planning", "A/B testing and weekly optimization", "Monthly performance report and recommendations"],
+            ar: ["نطاق الحملة يحدد بالاتفاق وفق ميزانيتك الإعلانية", "8 تصاميم إعلانية شهريًا", "إعداد الحساب والتتبع وتخطيط الحملات", "اختبار A/B وتحسين أسبوعي", "تقرير أداء شهري وتوصيات"]
           }
         },
         {
           requestValue: "ad_spend_over_150000",
-          name: { en: "Above EGP 150,000 budget", ar: "ميزانية أعلى من 150,000 جنيه" },
-          price: { en: "By agreement", ar: "باتفاق" },
+          name: { en: "Custom management", ar: "إدارة مخصصة" },
           features: {
-            en: ["Custom management fee", "Advertising budget paid by the client", "Included work applies to all management tiers"],
-            ar: ["رسوم إدارة مخصصة", "ميزانية الإعلان يدفعها العميل", "تطبق أعمال الباقة المشمولة على جميع فئات الإدارة"]
+            en: ["Campaign scope agreed around your advertising budget", "8 advertising creatives per month", "Account setup, tracking and campaign planning", "A/B testing and weekly optimization", "Monthly performance report and recommendations"],
+            ar: ["نطاق الحملة يحدد بالاتفاق وفق ميزانيتك الإعلانية", "8 تصاميم إعلانية شهريًا", "إعداد الحساب والتتبع وتخطيط الحملات", "اختبار A/B وتحسين أسبوعي", "تقرير أداء شهري وتوصيات"]
           }
         }
       ],
       conditions: {
-        en: ["Advertising account setup and tracking tools", "Pixel / Conversions setup", "Audience targeting", "Campaign planning and budget distribution", "4 advertising creatives monthly", "8 advertising creatives for budgets above EGP 60,000", "A/B testing", "Weekly optimization", "Monthly performance report and recommendations", "Management fees are separate from the advertising budget paid directly to the platforms."],
-        ar: ["إعداد حساب الإعلان وأدوات التتبع", "إعداد البكسل والتحويلات", "استهداف الجمهور", "تخطيط الحملة وتوزيع الميزانية", "4 تصاميم إعلانية شهريًا", "8 تصاميم إعلانية للميزانيات الأعلى من 60,000 جنيه", "اختبار A/B", "تحسين أسبوعي", "تقرير أداء شهري وتوصيات", "رسوم الإدارة منفصلة عن ميزانية الإعلان المدفوعة مباشرة للمنصات."]
+        en: ["Includes advertising account setup and Pixel / Conversions tracking.", "Audience targeting, campaign planning and budget allocation are included.", "The appropriate management tier is confirmed with your quote based on advertising spend and scope.", "Advertising spend is paid directly to platforms by the client, separately from management fees."],
+        ar: ["تشمل الخدمة إعداد الحساب الإعلاني وأدوات تتبع البكسل والتحويلات.", "تشمل تحديد الجمهور المستهدف وبناء خطة الحملات وتوزيع الميزانية.", "يحدد مستوى الإدارة المناسب في عرض السعر وفق الإنفاق الإعلاني ونطاق العمل.", "يدفع العميل الإنفاق الإعلاني مباشرة للمنصات، بشكل منفصل عن أتعاب الإدارة."]
       }
     },
     {
       id: "design",
       requestValue: "graphic_design",
       requestName: { en: "Graphic Design", ar: "التصميم الجرافيكي" },
-      name: { en: "Graphic Design", ar: "التصميم الجرافيكي" },
-      description: {
-        en: "Focused visual assets for social content, campaigns, print, and short-form video.",
-        ar: "تصاميم بصرية مركزة لمحتوى التواصل والحملات والطباعة والفيديو القصير."
-      },
+      name: { en: "Design, Posters & Video", ar: "التصميم والبوسترات والفيديو" },
+      description: { en: "Focused visual assets for social content, campaigns, print, and short-form video.", ar: "تصاميم بصرية مركزة لمحتوى التواصل والحملات والطباعة والفيديو القصير." },
       highlights: {
         en: ["Social and advertising creatives", "Carousels and posters", "Short branded videos"],
         ar: ["تصاميم تواصل وإعلانات", "كاروسيل وملصقات", "فيديوهات قصيرة"]
@@ -184,19 +160,17 @@ window.ZATONA_SITE_DATA = {
       packages: [
         {
           name: { en: "Individual services", ar: "خدمات فردية" },
-          price: { en: "From EGP 120", ar: "ابتداءً من 120 جنيهًا" },
           features: {
-            en: ["Social media post: EGP 150", "Story or cover: EGP 120", "Advertising creative: EGP 200", "Carousel up to 5 slides: EGP 450", "Print-ready poster or flyer: EGP 350", "Short video up to 30 seconds using client-provided materials: EGP 450"],
-            ar: ["منشور وسائل تواصل: 150 جنيهًا", "ستوري أو غلاف: 120 جنيهًا", "تصميم إعلاني: 200 جنيه", "كاروسيل حتى 5 شرائح: 450 جنيهًا", "ملصق أو فلاير جاهز للطباعة: 350 جنيهًا", "فيديو قصير حتى 30 ثانية باستخدام مواد العميل: 450 جنيهًا"]
+            en: ["Social media post", "Story or cover", "Advertising creative", "Carousel up to 5 slides", "Print-ready poster or flyer", "Short video up to 30 seconds using client-provided materials"],
+            ar: ["منشور وسائل تواصل", "ستوري أو غلاف", "تصميم إعلاني", "كاروسيل حتى 5 شرائح", "ملصق أو فلاير جاهز للطباعة", "فيديو قصير حتى 30 ثانية باستخدام مواد العميل"]
           }
         },
         {
           name: { en: "Design bundles", ar: "باقات التصاميم" },
-          price: { en: "EGP 1,200–3,000", ar: "1,200–3,000 جنيه" },
           featured: true,
           features: {
-            en: ["10 designs: EGP 1,200", "20 designs: EGP 2,200", "30 designs: EGP 3,000"],
-            ar: ["10 تصاميم: 1,200 جنيه", "20 تصميمًا: 2,200 جنيه", "30 تصميمًا: 3,000 جنيه"]
+            en: ["10-design bundle", "20-design bundle", "30-design bundle"],
+            ar: ["باقة 10 تصميمات", "باقة 20 تصميمًا", "باقة 30 تصميمًا"]
           }
         }
       ],
@@ -205,15 +179,42 @@ window.ZATONA_SITE_DATA = {
         ar: ["جولتا تعديل لكل تصميم.", "التسليم خلال 2–3 أيام عمل.", "ملفات المصدر بتكلفة إضافية."]
       },
       requestPackages: [
-        { value: "social_post", label: { en: "Social media post — EGP 150", ar: "منشور وسائل تواصل — 150 جنيهًا" } },
-        { value: "story_or_cover", label: { en: "Story or cover — EGP 120", ar: "ستوري أو غلاف — 120 جنيهًا" } },
-        { value: "advertising_creative", label: { en: "Advertising creative — EGP 200", ar: "تصميم إعلاني — 200 جنيه" } },
-        { value: "carousel_up_to_5", label: { en: "Carousel up to 5 slides — EGP 450", ar: "كاروسيل حتى 5 شرائح — 450 جنيهًا" } },
-        { value: "print_poster_flyer", label: { en: "Print-ready poster or flyer — EGP 350", ar: "ملصق أو فلاير جاهز للطباعة — 350 جنيهًا" } },
-        { value: "short_video_up_to_30", label: { en: "Short video up to 30 seconds — EGP 450", ar: "فيديو قصير حتى 30 ثانية — 450 جنيهًا" } },
-        { value: "design_bundle_10", label: { en: "10-design bundle — EGP 1,200", ar: "باقة 10 تصاميم — 1,200 جنيه" } },
-        { value: "design_bundle_20", label: { en: "20-design bundle — EGP 2,200", ar: "باقة 20 تصميمًا — 2,200 جنيه" } },
-        { value: "design_bundle_30", label: { en: "30-design bundle — EGP 3,000", ar: "باقة 30 تصميمًا — 3,000 جنيه" } }
+        {
+          value: "social_post",
+          label: { en: "Social media post", ar: "منشور وسائل تواصل" }
+        },
+        {
+          value: "story_or_cover",
+          label: { en: "Story or cover", ar: "ستوري أو غلاف" }
+        },
+        {
+          value: "advertising_creative",
+          label: { en: "Advertising creative", ar: "تصميم إعلاني" }
+        },
+        {
+          value: "carousel_up_to_5",
+          label: { en: "Carousel up to 5 slides", ar: "كاروسيل حتى 5 شرائح" }
+        },
+        {
+          value: "print_poster_flyer",
+          label: { en: "Print-ready poster or flyer", ar: "ملصق أو فلاير جاهز للطباعة" }
+        },
+        {
+          value: "short_video_up_to_30",
+          label: { en: "Short video up to 30 seconds", ar: "فيديو قصير حتى 30 ثانية" }
+        },
+        {
+          value: "design_bundle_10",
+          label: { en: "10-design bundle", ar: "باقة 10 تصاميم" }
+        },
+        {
+          value: "design_bundle_20",
+          label: { en: "20-design bundle", ar: "باقة 20 تصميمًا" }
+        },
+        {
+          value: "design_bundle_30",
+          label: { en: "30-design bundle", ar: "باقة 30 تصميمًا" }
+        }
       ]
     },
     {
@@ -221,10 +222,7 @@ window.ZATONA_SITE_DATA = {
       requestValue: "cv_career_services",
       requestName: { en: "CV & Career Services", ar: "خدمات السيرة الذاتية والمسار المهني" },
       name: { en: "CV & Career Services", ar: "خدمات السيرة الذاتية والمسار المهني" },
-      description: {
-        en: "Professional CV, cover letter, and LinkedIn support for clearer career opportunities.",
-        ar: "سيرة ذاتية احترافية وخطاب تقديم وتحسين لينكدإن لفرص مهنية أوضح."
-      },
+      description: { en: "Professional CV, cover letter, and LinkedIn support for clearer career opportunities.", ar: "سيرة ذاتية احترافية وخطاب تقديم وتحسين لينكدإن لفرص مهنية أوضح." },
       highlights: {
         en: ["Bilingual CVs", "Cover letters", "LinkedIn optimization"],
         ar: ["سير ذاتية ثنائية اللغة", "خطابات تقديم", "تحسين لينكدإن"]
@@ -235,15 +233,13 @@ window.ZATONA_SITE_DATA = {
       packages: [
         {
           name: { en: "Individual services", ar: "خدمات فردية" },
-          price: { en: "From EGP 250", ar: "ابتداءً من 250 جنيهًا" },
           features: {
-            en: ["Professional CV in one language: EGP 250", "Arabic and English CV: EGP 400", "CV with cover letter: EGP 450", "LinkedIn profile optimization: EGP 600"],
-            ar: ["سيرة ذاتية احترافية بلغة واحدة: 250 جنيهًا", "سيرة ذاتية عربية وإنجليزية: 400 جنيه", "سيرة ذاتية مع خطاب تقديم: 450 جنيهًا", "تحسين ملف لينكدإن: 600 جنيه"]
+            en: ["Professional CV in one language", "Arabic and English CV", "CV with cover letter", "LinkedIn profile optimization"],
+            ar: ["سيرة ذاتية احترافية بلغة واحدة", "سيرة ذاتية عربية وإنجليزية", "سيرة ذاتية مع خطاب تقديم", "تحسين ملف لينكدإن"]
           }
         },
         {
           name: { en: "Complete career package", ar: "حزمة المسار المهني الكاملة" },
-          price: { en: "EGP 1,200", ar: "1,200 جنيه" },
           featured: true,
           features: {
             en: ["Bilingual CV", "Cover letter", "LinkedIn profile optimization"],
@@ -252,93 +248,212 @@ window.ZATONA_SITE_DATA = {
         }
       ],
       conditions: {
-        en: ["Delivery within 48 hours.", "One free revision within 7 days.", "Urgent 24-hour delivery costs an additional 30%."],
-        ar: ["التسليم خلال 48 ساعة.", "تعديل مجاني واحد خلال 7 أيام.", "التسليم العاجل خلال 24 ساعة بتكلفة إضافية 30%."]
+        en: ["Delivery within 48 hours.", "One free revision within 7 days.", "Urgent delivery within 24 hours is available on request; any extra fee is confirmed in your quote."],
+        ar: ["التسليم خلال 48 ساعة.", "تعديل مجاني واحد خلال 7 أيام.", "التسليم العاجل خلال 24 ساعة متاح عند الطلب؛ وأي رسوم إضافية توضح في عرض السعر."]
       },
       requestPackages: [
-        { value: "professional_cv", label: { en: "Professional CV — EGP 250", ar: "سيرة ذاتية احترافية — 250 جنيهًا" } },
-        { value: "bilingual_cv", label: { en: "Bilingual CV — EGP 400", ar: "سيرة ذاتية ثنائية اللغة — 400 جنيه" } },
-        { value: "cv_cover_letter", label: { en: "CV + Cover Letter — EGP 450", ar: "سيرة ذاتية + خطاب تقديم — 450 جنيهًا" } },
-        { value: "linkedin_optimization", label: { en: "LinkedIn Profile Optimization — EGP 600", ar: "تحسين ملف لينكدإن — 600 جنيه" } },
-        { value: "complete_career_package", label: { en: "Complete Career Package — EGP 1,200", ar: "حزمة المسار المهني الكاملة — 1,200 جنيه" } }
+        {
+          value: "professional_cv",
+          label: { en: "Professional CV", ar: "سيرة ذاتية احترافية" }
+        },
+        {
+          value: "bilingual_cv",
+          label: { en: "Bilingual CV", ar: "سيرة ذاتية ثنائية اللغة" }
+        },
+        {
+          value: "cv_cover_letter",
+          label: { en: "CV + Cover Letter", ar: "سيرة ذاتية + خطاب تقديم" }
+        },
+        {
+          value: "linkedin_optimization",
+          label: { en: "LinkedIn Profile Optimization", ar: "تحسين ملف لينكدإن" }
+        },
+        {
+          value: "complete_career_package",
+          label: { en: "Complete Career Package", ar: "حزمة المسار المهني الكاملة" }
+        }
       ]
     }
   ],
   requestForm: {
     industries: [
-      { value: "ecommerce", label: { en: "E-commerce", ar: "التجارة الإلكترونية" } },
-      { value: "education", label: { en: "Education", ar: "التعليم والتدريب" } },
-      { value: "healthcare", label: { en: "Healthcare", ar: "الصحة والطب" } },
-      { value: "real_estate", label: { en: "Real Estate", ar: "العقارات" } },
-      { value: "hospitality", label: { en: "Hospitality", ar: "المطاعم والضيافة" } },
-      { value: "technology", label: { en: "Technology", ar: "التكنولوجيا والبرمجيات" } },
-      { value: "professional_services", label: { en: "Professional Services", ar: "الخدمات المهنية" } },
-      { value: "manufacturing", label: { en: "Manufacturing", ar: "التصنيع والصناعة" } },
-      { value: "retail", label: { en: "Retail", ar: "البيع بالتجزئة" } },
-      { value: "other", label: { en: "Other", ar: "أخرى" } }
+      {
+        value: "ecommerce",
+        label: { en: "E-commerce", ar: "التجارة الإلكترونية" }
+      },
+      {
+        value: "education",
+        label: { en: "Education", ar: "التعليم والتدريب" }
+      },
+      {
+        value: "healthcare",
+        label: { en: "Healthcare", ar: "الصحة والطب" }
+      },
+      {
+        value: "real_estate",
+        label: { en: "Real Estate", ar: "العقارات" }
+      },
+      {
+        value: "hospitality",
+        label: { en: "Hospitality", ar: "المطاعم والضيافة" }
+      },
+      {
+        value: "technology",
+        label: { en: "Technology", ar: "التكنولوجيا والبرمجيات" }
+      },
+      {
+        value: "professional_services",
+        label: { en: "Professional Services", ar: "الخدمات المهنية" }
+      },
+      {
+        value: "manufacturing",
+        label: { en: "Manufacturing", ar: "التصنيع والصناعة" }
+      },
+      {
+        value: "retail",
+        label: { en: "Retail", ar: "البيع بالتجزئة" }
+      },
+      {
+        value: "other",
+        label: { en: "Other", ar: "أخرى" }
+      }
     ],
     companySizes: [
-      { value: "startup", label: { en: "Startup", ar: "شركة ناشئة" } },
-      { value: "small", label: { en: "Small Business", ar: "شركة صغيرة" } },
-      { value: "established", label: { en: "Established Company", ar: "شركة قائمة" } }
+      {
+        value: "startup",
+        label: { en: "Startup", ar: "شركة ناشئة" }
+      },
+      {
+        value: "small",
+        label: { en: "Small Business", ar: "شركة صغيرة" }
+      },
+      {
+        value: "established",
+        label: { en: "Established Company", ar: "شركة قائمة" }
+      }
     ],
     jobTitles: [
-      { value: "founder", label: { en: "Founder", ar: "مؤسس" } },
-      { value: "ceo", label: { en: "CEO", ar: "مدير تنفيذي" } },
-      { value: "marketing_manager", label: { en: "Marketing Manager", ar: "مدير تسويق" } },
-      { value: "business_owner", label: { en: "Business Owner", ar: "صاحب شركة" } },
-      { value: "hr_manager", label: { en: "HR Manager", ar: "مدير موارد بشرية" } },
-      { value: "other", label: { en: "Other", ar: "أخرى" } }
+      {
+        value: "founder",
+        label: { en: "Founder", ar: "مؤسس" }
+      },
+      {
+        value: "ceo",
+        label: { en: "CEO", ar: "مدير تنفيذي" }
+      },
+      {
+        value: "marketing_manager",
+        label: { en: "Marketing Manager", ar: "مدير تسويق" }
+      },
+      {
+        value: "business_owner",
+        label: { en: "Business Owner", ar: "صاحب شركة" }
+      },
+      {
+        value: "hr_manager",
+        label: { en: "HR Manager", ar: "مدير موارد بشرية" }
+      },
+      {
+        value: "other",
+        label: { en: "Other", ar: "أخرى" }
+      }
     ],
     budgets: [
-      { value: "under_3000", label: { en: "Under EGP 3,000", ar: "أقل من 3,000 جنيه" } },
-      { value: "egp_3000_5000", label: { en: "EGP 3,000–5,000", ar: "3,000–5,000 جنيه" } },
-      { value: "egp_5001_10000", label: { en: "EGP 5,001–10,000", ar: "5,001–10,000 جنيه" } },
-      { value: "egp_10001_20000", label: { en: "EGP 10,001–20,000", ar: "10,001–20,000 جنيه" } },
-      { value: "egp_20001_50000", label: { en: "EGP 20,001–50,000", ar: "20,001–50,000 جنيه" } },
-      { value: "over_50000", label: { en: "Above EGP 50,000", ar: "أكثر من 50,000 جنيه" } },
-      { value: "undecided", label: { en: "Not sure yet", ar: "غير محددة بعد" } }
+      {
+        value: "under_3000",
+        label: { en: "Under EGP 3,000", ar: "أقل من 3,000 جنيه" }
+      },
+      {
+        value: "egp_3000_5000",
+        label: { en: "EGP 3,000–5,000", ar: "3,000–5,000 جنيه" }
+      },
+      {
+        value: "egp_5001_10000",
+        label: { en: "EGP 5,001–10,000", ar: "5,001–10,000 جنيه" }
+      },
+      {
+        value: "egp_10001_20000",
+        label: { en: "EGP 10,001–20,000", ar: "10,001–20,000 جنيه" }
+      },
+      {
+        value: "egp_20001_50000",
+        label: { en: "EGP 20,001–50,000", ar: "20,001–50,000 جنيه" }
+      },
+      {
+        value: "over_50000",
+        label: { en: "Above EGP 50,000", ar: "أكثر من 50,000 جنيه" }
+      },
+      {
+        value: "undecided",
+        label: { en: "Not sure yet", ar: "غير محددة بعد" }
+      }
     ],
     advertisingBudgets: [
-      { value: "under_20000", label: { en: "Under EGP 20,000", ar: "أقل من 20,000 جنيه" } },
-      { value: "egp_20001_60000", label: { en: "EGP 20,001–60,000", ar: "20,001–60,000 جنيه" } },
-      { value: "egp_60001_150000", label: { en: "EGP 60,001–150,000", ar: "60,001–150,000 جنيه" } },
-      { value: "over_150000", label: { en: "Above EGP 150,000", ar: "أكثر من 150,000 جنيه" } },
-      { value: "undecided", label: { en: "Not decided yet", ar: "لم تُحدد بعد" } }
+      {
+        value: "under_20000",
+        label: { en: "Under EGP 20,000", ar: "أقل من 20,000 جنيه" }
+      },
+      {
+        value: "egp_20001_60000",
+        label: { en: "EGP 20,001–60,000", ar: "20,001–60,000 جنيه" }
+      },
+      {
+        value: "egp_60001_150000",
+        label: { en: "EGP 60,001–150,000", ar: "60,001–150,000 جنيه" }
+      },
+      {
+        value: "over_150000",
+        label: { en: "Above EGP 150,000", ar: "أكثر من 150,000 جنيه" }
+      },
+      {
+        value: "undecided",
+        label: { en: "Not decided yet", ar: "لم تُحدد بعد" }
+      }
     ],
     otherPackages: [
-      { value: "not_sure", label: { en: "Not sure yet", ar: "لست متأكدًا بعد" } },
-      { value: "custom_request", label: { en: "Custom request", ar: "طلب مخصص" } }
+      {
+        value: "not_sure",
+        label: { en: "Not sure yet", ar: "لست متأكدًا بعد" }
+      },
+      {
+        value: "custom_request",
+        label: { en: "Custom request", ar: "طلب مخصص" }
+      }
     ]
   },
   addOns: [
     {
-      name: { en: "Additional managed platform", ar: "منصة إضافية مُدارة" },
-      price: { en: "EGP 1,200 monthly", ar: "1,200 جنيه شهريًا" }
+      name: { en: "Additional platform: management & content", ar: "منصة إضافية: إدارة ومحتوى" }
     },
     {
-      name: { en: "10 additional posts", ar: "10 منشورات إضافية" },
-      price: { en: "EGP 1,800", ar: "1,800 جنيه" }
+      name: { en: "10 extra posts: writing & design", ar: "10 منشورات إضافية: محتوى وتصميم" }
     },
     {
-      name: { en: "Additional short video", ar: "مقطع فيديو قصير إضافي" },
-      price: { en: "EGP 450", ar: "450 جنيهًا" }
+      name: { en: "Additional short video", ar: "مقطع فيديو قصير إضافي" }
     },
     {
-      name: { en: "Field photography", ar: "تصوير ميداني" },
-      price: { en: "By agreement", ar: "باتفاق" }
+      name: { en: "Field photography", ar: "تصوير ميداني" }
     }
   ],
   discounts: [
-    { name: { en: "3-month subscription", ar: "اشتراك 3 أشهر" }, value: { en: "5%", ar: "5%" } },
-    { name: { en: "6-month subscription", ar: "اشتراك 6 أشهر" }, value: { en: "10%", ar: "10%" } },
-    { name: { en: "12-month subscription", ar: "اشتراك 12 شهرًا" }, value: { en: "15%", ar: "15%" } },
-    { name: { en: "Social media + customer support", ar: "وسائل التواصل + دعم العملاء" }, value: { en: "Additional 10%", ar: "خصم إضافي 10%" } },
+    {
+      name: { en: "3-month subscription", ar: "اشتراك 3 أشهر" },
+      value: { en: "5%", ar: "5%" }
+    },
+    {
+      name: { en: "6-month subscription", ar: "اشتراك 6 أشهر" },
+      value: { en: "10%", ar: "10%" }
+    },
+    {
+      name: { en: "12-month subscription", ar: "اشتراك 12 شهرًا" },
+      value: { en: "15%", ar: "15%" }
+    },
+    {
+      name: { en: "Social media + customer support", ar: "وسائل التواصل + دعم العملاء" },
+      value: { en: "Additional 10%", ar: "خصم إضافي 10%" }
+    }
   ],
-  discountCondition: {
-    en: "Maximum total discount: 20% of monthly service fees.",
-    ar: "الحد الأقصى لإجمالي الخصم: 20% من رسوم الخدمات الشهرية."
-  },
+  discountCondition: { en: "Maximum total discount: 20% of monthly service fees.", ar: "الحد الأقصى لإجمالي الخصم: 20% من رسوم الخدمات الشهرية." },
   contact: {
     email: "zatonaagency@gmail.com",
     phone: "",
@@ -346,7 +461,7 @@ window.ZATONA_SITE_DATA = {
   },
   whatsapp: {
     enabled: false,
-    number: "" // Will be set when WhatsApp becomes available
+    number: ""
   },
   socials: [
     {
@@ -365,5 +480,12 @@ window.ZATONA_SITE_DATA = {
       label: "LinkedIn",
       url: "https://www.linkedin.com/in/zatona-agency-02b350450/"
     }
-  ]
+  ],
+  pricing: {
+    showPrices: false
+  },
+  terms: {
+    en: ["Monthly packages have a minimum subscription of 3 months. Cancellation requires 30 days of written notice.", "Monthly fees are paid before work begins. Work starts after the first payment, brand information and required account access are received.", "Content calendars need approval at least 5 days before the start of each month. Late approval may delay publication without reducing fees.", "We follow best practices to improve performance. Specific sales or results are not guaranteed and depend on the market, product and budget.", "Client data and accounts are kept confidential and used only to deliver the agreed service.", "Your tailored quote confirms fees, any applicable tax, validity and scope. A change in scope may require a revised quote."],
+    ar: ["الحد الأدنى للاشتراك في الباقات الشهرية 3 أشهر، ويتطلب الإنهاء إخطارًا كتابيًا قبل 30 يومًا.", "تسدد أتعاب كل شهر مقدمًا. ويبدأ العمل بعد سداد الدفعة الأولى واستلام بيانات العلامة التجارية والصلاحيات اللازمة.", "يعتمد العميل جدول المحتوى قبل بداية كل شهر بخمسة أيام على الأقل. وقد يؤدي التأخر في الاعتماد إلى تأخر النشر دون خفض الأتعاب.", "نعمل وفق أفضل الممارسات لتحسين الأداء، ولا نضمن مبيعات أو نتائج محددة لارتباطها بالسوق والمنتج والميزانية.", "نلتزم بسرية بيانات العميل وحساباته، ولا نستخدمها إلا لتنفيذ الخدمة المتفق عليها.", "يوضح عرض السعر المخصص الأتعاب والضريبة إن استحقت وصلاحية العرض ونطاق العمل. وقد يتطلب تغيير النطاق تحديث العرض."]
+  }
 };

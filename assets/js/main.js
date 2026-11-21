@@ -908,6 +908,25 @@
     const container = document.querySelector("[data-social-links]");
     if (!container) return;
 
+    const icons = {
+      facebook: [
+        ["path", { d: "M14 22v-9h3l.5-4H14V7c0-1.1.3-2 2-2h2V1.4A24 24 0 0 0 15 1c-3 0-5 1.8-5 5v3H7v4h3v9z" }]
+      ],
+      instagram: [
+        ["rect", { x: 3, y: 3, width: 18, height: 18, rx: 5, fill: "none", stroke: "currentColor", "stroke-width": 2 }],
+        ["circle", { cx: 12, cy: 12, r: 4, fill: "none", stroke: "currentColor", "stroke-width": 2 }],
+        ["circle", { cx: 17.5, cy: 6.5, r: 1.2 }]
+      ],
+      tiktok: [
+        ["path", { d: "M16.6 2c.3 2.6 1.8 4.2 4.4 4.4v3.4a10 10 0 0 1-4.4-1.3v7.3a6.2 6.2 0 1 1-5.3-6.1v3.5a2.8 2.8 0 1 0 1.9 2.6V2z" }]
+      ],
+      linkedin: [
+        ["circle", { cx: 4.5, cy: 4.5, r: 2 }],
+        ["path", { d: "M3 8h3v13H3zM9 8h3v1.8c.8-1.3 2-2.1 3.7-2.1 3.4 0 5.3 2 5.3 5.7V21h-3.5v-7c0-2-.7-3.1-2.3-3.1-1.8 0-2.7 1.2-2.7 3.1v7H9z" }]
+      ]
+    };
+    const svgNamespace = "http://www.w3.org/2000/svg";
+
     socials.forEach((social) => {
       if (!social.label || !social.url) {
         console.warn("Skipping a ZATONA social link with missing label or URL.", social);
@@ -916,9 +935,29 @@
 
       const link = document.createElement("a");
       link.href = social.url;
-      link.textContent = social.label;
       link.target = "_blank";
       link.rel = "noopener noreferrer";
+      link.setAttribute("aria-label", social.label);
+      link.title = social.label;
+
+      const shapes = icons[social.label.trim().toLowerCase()];
+      if (shapes) {
+        link.className = "social-link";
+        const svg = document.createElementNS(svgNamespace, "svg");
+        svg.setAttribute("viewBox", "0 0 24 24");
+        svg.setAttribute("fill", "currentColor");
+        svg.setAttribute("aria-hidden", "true");
+        svg.setAttribute("focusable", "false");
+        shapes.forEach(([tag, attributes]) => {
+          const shape = document.createElementNS(svgNamespace, tag);
+          Object.entries(attributes).forEach(([name, value]) => shape.setAttribute(name, value));
+          svg.append(shape);
+        });
+        link.append(svg);
+      } else {
+        // Keep future platforms usable until their icon is added.
+        link.textContent = social.label;
+      }
       container.append(link);
     });
   }

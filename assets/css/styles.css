@@ -17,6 +17,9 @@
   --font-arabic: "Noto Sans Arabic", "Tahoma", sans-serif;
   --page-gutter: clamp(1.25rem, 4.5vw, 4.5rem);
   --content-width: 1440px;
+  --radius-control: 0.5rem;
+  --radius-card: 1rem;
+  --radius-panel: 1.5rem;
 }
 
 * {
@@ -276,7 +279,7 @@ html[lang="ar"] .hero h1 {
   gap: 1.5rem;
   padding: 0.75rem 1.1rem;
   border: 1px solid var(--olive);
-  border-radius: 2px;
+  border-radius: var(--radius-control);
   font-size: 0.9rem;
   font-weight: 600;
   box-shadow: 0 0 0 rgb(37 41 31 / 0%);
@@ -616,7 +619,7 @@ html[dir="rtl"] .pricing-heading h3 {
   min-height: 2.85rem;
   padding: 0.65rem 1rem;
   border: 1px solid var(--sand);
-  border-radius: 2px;
+  border-radius: var(--radius-control);
   color: var(--olive);
   background: var(--cream);
   cursor: pointer;
@@ -1022,7 +1025,7 @@ html[lang="ar"] .contact-card-label {
   min-height: 2.8rem;
   padding: 0.65rem 0.75rem;
   border: 1px solid #c9c4b8;
-  border-radius: 2px;
+  border-radius: var(--radius-control);
   color: var(--ink);
   background: var(--white);
   font: inherit;
@@ -2032,4 +2035,103 @@ html[lang="ar"] .contact-social .social-links {
 }
 @media (prefers-reduced-motion: reduce) {
   .package-card:hover { transform: none; }
+}
+
+/* Soft corners on contained surfaces; full-width sections and dividers stay crisp. */
+.skip-link,
+.package-badge {
+  border-radius: var(--radius-control);
+}
+
+.service-card,
+.package-card,
+.work-empty,
+.request-success {
+  border-radius: var(--radius-card);
+}
+
+.pricing-shell,
+.contact-card {
+  border-radius: var(--radius-panel);
+}
+
+.extra-item,
+.extra-visual,
+.pricing-conditions,
+.service-terms,
+.empty-note {
+  border-radius: 0.75rem;
+}
+
+/* Small UI refinements keep the existing type, palette and page structure. */
+.service-card,
+.package-card,
+.contact-card {
+  padding: clamp(1.35rem, 2.25vw, 2rem);
+}
+
+.service-card h3,
+.package-card h5 {
+  line-height: 1.45;
+}
+
+html[lang="ar"] .service-card h3,
+html[lang="ar"] .package-card h5 {
+  line-height: 1.75;
+}
+
+.pricing-tabs { align-items: stretch; gap: 0.65rem; }
+.pricing-tab { display: inline-flex; align-items: center; justify-content: center; }
+.package-card ul { margin-block-end: 1.5rem; }
+.pricing-conditions ul:last-child { margin-block-end: 0; }
+.service-terms summary { line-height: 1.65; }
+.service-terms[open] summary { margin-block-end: 1rem; }
+.service-terms ul { margin-block-end: 0; }
+
+.form-field :is(input, select, textarea) {
+  min-height: 3rem;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+.form-field textarea { min-height: 7rem; }
+.form-field :is(input, select, textarea):focus {
+  box-shadow: 0 0 0 3px rgb(53 69 45 / 8%);
+}
+
+.service-card-cta { min-height: 2.75rem; }
+.service-terms { transition: border-color 180ms ease; }
+.social-link:hover { text-decoration: none; }
+
+@media (hover: hover) and (pointer: fine) {
+  .form-field :is(input, select, textarea):hover:not(:focus):not([aria-invalid="true"]) {
+    border-color: var(--olive-soft);
+  }
+  .service-terms:hover { border-color: var(--olive-soft); }
+  .pricing-tab:hover { box-shadow: 0 0.25rem 0.65rem rgb(37 41 31 / 10%); }
+}
+
+@media (max-width: 620px) {
+  .service-card,
+  .package-card,
+  .contact-card { padding: 1.25rem; }
+  .pricing-shell { border-radius: 1.25rem; }
+  .menu-toggle { min-height: 2.75rem; }
+  .primary-navigation.is-open {
+    border-radius: 0 0 1rem 1rem;
+    box-shadow: 0 0.75rem 1.25rem rgb(37 41 31 / 8%);
+  }
+  .primary-navigation a.is-active::after { display: none; }
+  .primary-navigation a.is-active { font-weight: 700; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .service-card:hover,
+  .service-card:hover .service-card-visual,
+  .button:hover,
+  .social-link:hover,
+  .social-link:focus { transform: none; }
+}
+
+/* Keep paired company fields aligned when a label wraps in either language. */
+@media (min-width: 621px) {
+  .request-step[data-form-step="1"] .form-row { align-items: end; }
 }
